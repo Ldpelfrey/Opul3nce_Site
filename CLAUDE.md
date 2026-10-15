@@ -22,7 +22,7 @@ python3 -m http.server 8137          # 8137 is this project's. 8099 = Desert Hyd
 open http://localhost:8137/index.html
 open http://localhost:8137/admin/    # detects a static server (POST → 501), opens preview-only
 
-vercel --prod                        # deploy. No GitHub repo, so there is no git-push auto-deploy.
+vercel --prod                        # deploy. Repo is NOT git-connected to Vercel, so pushing does not deploy.
 ```
 
 Node is pinned to **22.x** in `package.json` — Vercel defaults new projects to 24 and the build fails.
@@ -30,7 +30,7 @@ Node is pinned to **22.x** in `package.json` — Vercel defaults new projects to
 ## Current state (2026-09-06)
 
 - **Live: https://opul3nce-site.vercel.app** — verified 200 with a logged-out curl.
-- Vercel project `opul3nce-site`, team `lucas-pelfrey-s-projects`. **No GitHub repo.**
+- Vercel project `opul3nce-site`, team `lucas-pelfrey-s-projects`. Repo: private `Ldpelfrey/Opul3nce_Site` (`main`), not git-connected to Vercel.
 - Verified at 1440px and 390px: contrast **212/212** and **206/206**, 1 `<h1>`, 0 dead links,
   0 broken images, 0 missing alt, 0 console errors, 0 failed requests.
 - `noindex, nofollow` + `robots.txt Disallow: /` are **deliberate** — this is an unsolicited

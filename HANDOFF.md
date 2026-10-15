@@ -6,7 +6,7 @@ Read `AUDIT.md` for why, `BUILD-PROMPT.md` for the spec. This file owns the oper
 **Status: DEPLOYED to Vercel as a pitch build, 2026-09-06.**
 
 - **Live: https://opul3nce-site.vercel.app** — verified reachable with a logged-out `curl` (200).
-- Vercel project `opul3nce-site` (team `lucas-pelfrey-s-projects`). **No GitHub repo** — deployed
+- Vercel project `opul3nce-site` (team `lucas-pelfrey-s-projects`). **Private repo `Ldpelfrey/Opul3nce_Site`, not git-connected to Vercel** — deployed
   straight from the directory, so there is no git-push auto-deploy. Redeploy with `vercel --prod`.
 - **`noindex, nofollow` + `robots.txt Disallow: /`** are deliberate. This is an unsolicited redesign
   of a third party's brand on a vercel.app URL; it must never compete with, or be mistaken for, the
