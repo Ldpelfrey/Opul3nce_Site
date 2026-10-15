@@ -14,12 +14,13 @@
   "meta": {
     "title": "Opul3nce Luxury Concierge — Exotic Rental & Private Transport, Scottsdale",
     "description": "Exotic cars, private transport, yachts and estates in Scottsdale, Miami and Los Angeles. Delivered, detailed and on time. Rates and availability on request.",
-    "ogImage": "assets/mercedes-g63-amg.webp",
+    "ogImage": "assets/brand/og-image-1200x630.png",
     "canonical": "https://opul3nce.io/"
   },
   "brand": {
     "name": "OPUL3NCE",
     "monogram": "3E",
+    "monogramImg": "assets/brand/opul3nce-3e-leaf.svg",
     "tagline": "Luxury Concierge"
   },
   "hero": {
@@ -323,12 +324,12 @@
     "consent": "I consent to receive SMS and email about this enquiry.",
     "submit": "Send enquiry",
     "success": "Received. You will hear back from the desk today.",
-    "failure": "That did not send. Call +1 (808) 276-8946 or email johnathan@opul3nce.io and we will pick it up."
+    "failure": "That did not send. Call +1 (602) 383-4678 or email info@opul3nce.io and we will pick it up."
   },
   "contact": {
-    "email": "johnathan@opul3nce.io",
-    "phone": "+1 (808) 276-8946",
-    "phoneHref": "tel:+18082768946",
+    "email": "info@opul3nce.io",
+    "phone": "+1 (602) 383-4678",
+    "phoneHref": "tel:+16023834678",
     "city": "Scottsdale, Arizona",
     "instagram": "https://www.instagram.com/opul3nce.io/"
   },

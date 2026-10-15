@@ -121,6 +121,9 @@ function validate(c) {
   }
   // MEDIA_RE deliberately accepts relative assets/… paths. Requiring https://
   // would reject every real media path on publish. Do not tighten it.
+  if (c.brand?.monogramImg && !MEDIA_RE.test(c.brand.monogramImg)) {
+    problems.push('Monogram image must be an assets/… path or an https:// URL.');
+  }
   if (c.meta?.ogImage && !MEDIA_RE.test(c.meta.ogImage)) {
     problems.push('OG image must be an https:// URL or an assets/ path.');
   }

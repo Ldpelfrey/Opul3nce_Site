@@ -12,3 +12,6 @@ reference
 .git
 .gitignore
 .vercel
+
+screenshots/
+verify-report.json
