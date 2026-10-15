@@ -1,0 +1,351 @@
+{
+  "_note": "Single source of truth. Every field here needs an input in admin/SECTIONS or publishing wipes it. Fields marked [VERIFY] are business facts nobody has supplied — they render an honest fallback, they are NOT invented.",
+  "theme": {
+    "font": "bodoni-moda",
+    "palette": {
+      "bone": "#EDE9E2",
+      "bone2": "#E4DFD6",
+      "ink": "#0E0E0D",
+      "ink2": "#1A1A18",
+      "leaf": "#7A5D1F",
+      "leafLift": "#C9A227"
+    }
+  },
+  "meta": {
+    "title": "Opul3nce Luxury Concierge — Exotic Rental & Private Transport, Scottsdale",
+    "description": "Exotic cars, private transport, yachts and estates in Scottsdale, Miami and Los Angeles. Delivered, detailed and on time. Rates and availability on request.",
+    "ogImage": "assets/mercedes-g63-amg.webp",
+    "canonical": "https://opul3nce.io/"
+  },
+  "brand": {
+    "name": "OPUL3NCE",
+    "monogram": "3E",
+    "tagline": "Luxury Concierge"
+  },
+  "hero": {
+    "kicker": "Scottsdale · Miami · Los Angeles",
+    "headline": "The keys, delivered.",
+    "standfirst": "Exotic cars, private transport, yachts and estates — placed in your hands where you are, on the day you need them. One desk, one number, no counter.",
+    "ctaPrimary": "Request availability",
+    "ctaPrimaryHref": "#enquire",
+    "ctaSecondary": "View the catalogue",
+    "ctaSecondaryHref": "#catalogue",
+    "plateNote": "[VERIFY] Hero plate is typographic by design — no licensed Scottsdale/Sonoran photography has been supplied. Do NOT substitute stock; the live site's current hero is Dubai Marina and that is the exact failure being corrected."
+  },
+  "position": {
+    "items": [
+      {
+        "figure": "50",
+        "label": "Vehicles in the fleet",
+        "note": "counted from the live inventory, 2026-09-06"
+      },
+      {
+        "figure": "3",
+        "label": "Markets served",
+        "note": "Scottsdale · Miami · Los Angeles"
+      },
+      {
+        "figure": "21",
+        "label": "Yachts on charter",
+        "note": "Miami and Los Angeles"
+      },
+      {
+        "figure": "12",
+        "label": "Private estates",
+        "note": "Miami"
+      }
+    ],
+    "footnote": "The live site's map pins seven markets and every footer lists three. Three is what ships here until Johnathan confirms which is correct."
+  },
+  "catalogue": {
+    "heading": "The catalogue",
+    "standfirst": "Every vehicle is delivered detailed, fuelled and photographed on handover. Rates vary by season, duration and delivery distance — ask and you get a number the same day.",
+    "rateFallback": "Rate on request",
+    "filters": [
+      "All",
+      "Performance",
+      "Marque SUV",
+      "Executive",
+      "Utility"
+    ],
+    "lots": [
+      {
+        "lot": "01",
+        "name": "Mercedes-AMG G63",
+        "year": "2024",
+        "class": "Marque SUV",
+        "image": "assets/mercedes-g63-amg.webp",
+        "alt": "Black Mercedes-AMG G63 photographed three-quarter front under low garage light",
+        "seats": "5",
+        "drive": "4MATIC AWD",
+        "rate": null,
+        "note": "The default answer when someone says they want to be seen."
+      },
+      {
+        "lot": "02",
+        "name": "Hummer EV 3X",
+        "year": "2025",
+        "class": "Utility",
+        "image": "assets/hummer-ev-3x.webp",
+        "alt": "GMC Hummer EV 3X in black with bronze wheels, headlights lit",
+        "seats": "5",
+        "drive": "e4WD",
+        "rate": null,
+        "note": "Electric, silent, and the only thing on this list nobody has seen before."
+      },
+      {
+        "lot": "03",
+        "name": "Porsche Macan",
+        "year": "2022",
+        "class": "Performance",
+        "image": "assets/porsche-macan.webp",
+        "alt": "Silver-grey Porsche Macan photographed three-quarter front",
+        "seats": "5",
+        "drive": "AWD",
+        "rate": null,
+        "note": "The one to take up the 51 to Sedona."
+      },
+      {
+        "lot": "04",
+        "name": "BMW 740i",
+        "year": "2023",
+        "class": "Executive",
+        "image": "assets/bmw-740i.webp",
+        "alt": "White BMW 740i saloon photographed head-on in a lit garage",
+        "seats": "5",
+        "drive": "RWD",
+        "rate": null,
+        "note": "Airport runs, client dinners, anything with a valet."
+      },
+      {
+        "lot": "05",
+        "name": "Grand Wagoneer Series 3",
+        "year": "2023",
+        "class": "Marque SUV",
+        "image": "assets/grand-wagoneer.webp",
+        "alt": "Black Jeep Grand Wagoneer Series 3 photographed three-quarter front",
+        "seats": "7",
+        "drive": "4x4",
+        "rate": null,
+        "note": "Seven seats without asking anyone to sit in a third row they resent."
+      },
+      {
+        "lot": "06",
+        "name": "Corvette C8 2LT",
+        "year": "2022",
+        "class": "Performance",
+        "image": "assets/corvette-c8.webp",
+        "alt": "Blue Chevrolet Corvette C8 photographed three-quarter front",
+        "seats": "2",
+        "drive": "Mid-engine RWD",
+        "rate": null,
+        "note": "Mid-engine. The most-requested car in the fleet."
+      },
+      {
+        "lot": "07",
+        "name": "Mercedes-Benz G550",
+        "year": "2016",
+        "class": "Marque SUV",
+        "image": "assets/mercedes-g550.webp",
+        "alt": "Mercedes-Benz G550 in dark paint photographed three-quarter front",
+        "seats": "5",
+        "drive": "4MATIC AWD",
+        "rate": null,
+        "note": "The square one, before the square one got soft."
+      },
+      {
+        "lot": "08",
+        "name": "GMC Denali Ultimate",
+        "year": "2023",
+        "class": "Utility",
+        "image": "assets/denali-ultimate.webp",
+        "alt": "White GMC Denali Ultimate pickup photographed three-quarter front",
+        "seats": "5",
+        "drive": "4WD",
+        "rate": null,
+        "note": "For the weekend that involves a trailer."
+      },
+      {
+        "lot": "09",
+        "name": "Mercedes-AMG GT43",
+        "year": "2023",
+        "class": "Performance",
+        "image": "assets/mercedes-gt43.webp",
+        "alt": "Mercedes-AMG GT43 four-door coupe photographed three-quarter front",
+        "seats": "4",
+        "drive": "4MATIC+ AWD",
+        "rate": null,
+        "note": "Four doors, and it still sounds like that."
+      },
+      {
+        "lot": "10",
+        "name": "Genesis G90",
+        "year": "2022",
+        "class": "Executive",
+        "image": "assets/genesis-g90.webp",
+        "alt": "Genesis G90 executive saloon photographed three-quarter front",
+        "seats": "5",
+        "drive": "AWD",
+        "rate": null,
+        "note": "The quiet flex. Nobody expects it and everybody notices it."
+      }
+    ],
+    "specNote": "Seat counts and drivetrains are manufacturer specifications for the model. Daily mileage caps, deposits, insurance terms, delivery radius and minimum age are confirmed at the time of booking.",
+    "_specNoteInternal": "[VERIFY] Mileage caps, deposits, insurance terms, delivery radius and minimum age are business facts nobody has supplied. The public note above says they are confirmed at booking, which is true and commits to nothing. Replace with real terms once Johnathan provides them."
+  },
+  "beyond": {
+    "heading": "Beyond the fleet",
+    "standfirst": "The same desk books the rest of the day.",
+    "items": [
+      {
+        "title": "Yacht charter",
+        "count": "21 vessels",
+        "body": "Pershing, Azimut, Westport and Viking hulls across Miami and Los Angeles. Crewed, provisioned, itinerary written to the day you have in mind."
+      },
+      {
+        "title": "Private estates",
+        "count": "12 properties",
+        "body": "Brickell, Coral Gables, Normandy Isles and Hollywood. Booked for stays, shoots and events, with staff arranged separately."
+      },
+      {
+        "title": "Group transport",
+        "count": "19 vehicles",
+        "body": "Executive Sprinters, Escalade and QX80 limousines, Prevost and MCI coaches to 56 seats. Chauffeured, for weddings, wraps and roadshows."
+      },
+      {
+        "title": "Private aviation",
+        "count": "On request",
+        "body": "Charter arranged through a global operator network. Routing, catering and ground transfers handled from the same enquiry."
+      }
+    ]
+  },
+  "proof": {
+    "heading": "What renters actually said",
+    "standfirst": "Unedited, and attributed the way they were left.",
+    "attribution": "Verified renter review",
+    "sourceNote": "[VERIFY] These reviews use host/pickup/drop-off language, which indicates a peer-to-peer rental platform. Label the source precisely once Johnathan confirms it — a checkable source is stronger than an unattributed five-star card.",
+    "quotes": [
+      {
+        "quote": "Jonathan is hands down the best host I've ever worked with in Phoenix. When I had a vehicle issue, he immediately swapped me into another car and made sure I was taken care of.",
+        "name": "Derrick"
+      },
+      {
+        "quote": "Super professional, easy in and out, super transparent.",
+        "name": "Vince"
+      },
+      {
+        "quote": "Car was very clean, and easy to pickup and drop off thanks to the detailed directions from the host. Very good and quick on communicating.",
+        "name": "Ericka"
+      },
+      {
+        "quote": "Great experience — Robert and Jonathan are the best, right on time. Vehicle was nicely cleaned up. Great customer service.",
+        "name": "Eddie"
+      },
+      {
+        "quote": "The quality of the car was great. Vehicle performed well and got a lot of looks and eyes. The C8 is a great car.",
+        "name": "Brandon"
+      },
+      {
+        "quote": "My experience was amazing and the host was very nice and explained how to use the vehicle well. I look forward to booking again.",
+        "name": "Regina"
+      }
+    ]
+  },
+  "desk": {
+    "heading": "The desk",
+    "standfirst": "Four people. You will deal with one of them, not a queue.",
+    "people": [
+      {
+        "name": "Johnathan Eden",
+        "role": "Founder",
+        "body": "Runs the fleet and answers the phone. Background in sales and business development across luxury retail, publishing, fine jewellery and technology."
+      },
+      {
+        "name": "Danielle Fox",
+        "role": "Co-founder, Marketing",
+        "body": "Brand, PR and partnerships. Came up through luxury branding, fine jewellery, insurance and car rental."
+      },
+      {
+        "name": "William Anthony",
+        "role": "Finance",
+        "body": "Contracts, deposits and merchant terms."
+      },
+      {
+        "name": "Calvin Alfaro",
+        "role": "Creative Director",
+        "body": "Shoots the fleet and the campaigns. Every vehicle photograph on this page is in-house work."
+      }
+    ]
+  },
+  "business": {
+    "heading": "Opul3nce Business Development",
+    "standfirst": "A separate practice, run by the same people. If you are here to rent a car, you can stop reading.",
+    "services": [
+      {
+        "title": "Websites & CRM",
+        "body": "Custom builds plus GoHighLevel setup, automation and training."
+      },
+      {
+        "title": "Merchant processing",
+        "body": "Card processing for high- and low-risk merchants, POS and online."
+      },
+      {
+        "title": "Business credit & funding",
+        "body": "Credit profile building, lender introductions, working capital."
+      },
+      {
+        "title": "Media production",
+        "body": "Video production, editing and content curation."
+      },
+      {
+        "title": "Branding & design",
+        "body": "Identity, logo systems and marketing collateral."
+      },
+      {
+        "title": "Paid acquisition",
+        "body": "TikTok, Google and Meta campaigns, built and managed."
+      }
+    ],
+    "cta": "Request a business audit",
+    "ctaHref": "#enquire"
+  },
+  "enquire": {
+    "heading": "Make an enquiry",
+    "standfirst": "Tell us the dates and the vehicle. You get a rate and a confirmation, not a callback queue.",
+    "interests": [
+      "Exotic car rental",
+      "Group transport",
+      "Yacht charter",
+      "Private estate",
+      "Private aviation",
+      "Business development"
+    ],
+    "consent": "I consent to receive SMS and email about this enquiry.",
+    "submit": "Send enquiry",
+    "success": "Received. You will hear back from the desk today.",
+    "failure": "That did not send. Call +1 (808) 276-8946 or email johnathan@opul3nce.io and we will pick it up."
+  },
+  "contact": {
+    "email": "johnathan@opul3nce.io",
+    "phone": "+1 (808) 276-8946",
+    "phoneHref": "tel:+18082768946",
+    "city": "Scottsdale, Arizona",
+    "instagram": "https://www.instagram.com/opul3nce.io/"
+  },
+  "footer": {
+    "markets": [
+      "Scottsdale, AZ",
+      "Miami, FL",
+      "Los Angeles, CA"
+    ],
+    "legal": [
+      "Terms and Conditions",
+      "Privacy Policy"
+    ],
+    "legalHref": [
+      "https://opul3nce.io/terms-of-service",
+      "https://opul3nce.io/privacy-policy"
+    ],
+    "_legalHrefNote": "Absolute URLs to the client's real legal pages, because this pitch deploy has no /terms-of-service or /privacy-policy of its own — relative paths 404'd here. Switch back to relative paths if this becomes the production site."
+  }
+}

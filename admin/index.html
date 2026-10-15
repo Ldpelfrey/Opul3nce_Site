@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Opul3nce — content editor</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet">
+<script src="../theme.js"></script>
+<style>
+:root{
+  --bg:#14140F; --panel:#1C1C17; --line:rgba(237,233,226,.14);
+  --text:#EDE9E2; --muted:#9C978D; --leaf:#C9A227; --bad:#E4645A; --ok:#7FB77E;
+  --f:"Instrument Sans",ui-sans-serif,system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--f);font-size:15px;line-height:1.55}
+a{color:var(--leaf)}
+.gate{min-height:100vh;display:grid;place-items:center;padding:2rem}
+.gate form{width:min(360px,100%);display:grid;gap:1rem}
+h1{font-size:1.6rem;margin:0 0 .4rem;letter-spacing:-.01em;font-weight:600}
+.sub{color:var(--muted);font-size:.9rem}
+input,select,textarea{
+  width:100%;background:#0E0E0A;border:1px solid var(--line);color:var(--text);
+  font-family:var(--f);font-size:.95rem;padding:.6rem .7rem;border-radius:3px;
+}
+textarea{resize:vertical;min-height:74px}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--leaf)}
+button{
+  background:var(--leaf);color:#14140F;border:0;font-family:var(--f);font-weight:700;
+  font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;padding:.7rem 1.2rem;
+  border-radius:3px;cursor:pointer;
+}
+button.ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
+button:disabled{opacity:.5;cursor:not-allowed}
+.shell{display:none;grid-template-columns:minmax(0,460px) minmax(0,1fr);height:100vh}
+.shell.on{display:grid}
+@media (max-width:1000px){.shell.on{grid-template-columns:1fr}.preview{display:none}}
+.pane{overflow-y:auto;padding:1.25rem;border-right:1px solid var(--line)}
+.bar{position:sticky;top:0;background:var(--bg);z-index:5;padding-bottom:.9rem;margin-bottom:.9rem;border-bottom:1px solid var(--line);display:flex;gap:.6rem;flex-wrap:wrap;align-items:center}
+details{border:1px solid var(--line);border-radius:4px;margin-bottom:.7rem;background:var(--panel)}
+summary{cursor:pointer;padding:.75rem .85rem;font-weight:600;font-size:1.15rem;letter-spacing:-.005em;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"▸ ";color:var(--leaf)}
+details[open] summary::before{content:"▾ "}
+.body{padding:.3rem .85rem 1rem;display:grid;gap:.8rem}
+label.f{display:grid;gap:.3rem;font-size:.75rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.item{border:1px solid var(--line);border-radius:3px;padding:.7rem;display:grid;gap:.6rem;background:#181813}
+.item h4{margin:0;font-size:.75rem;color:var(--leaf);letter-spacing:.12em;text-transform:uppercase}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+.msg{padding:.6rem .8rem;border-radius:3px;font-size:.85rem;background:var(--panel);border:1px solid var(--line);margin-bottom:.8rem;display:flex;gap:.55rem;align-items:baseline}
+.msg::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--leaf);flex:0 0 auto;transform:translateY(-1px)}
+.msg.bad::before{background:var(--bad)} .msg.ok::before{background:var(--ok)}
+.msg[hidden]{display:none!important}
+.preview{background:#000}
+.preview iframe{width:100%;height:100%;border:0;display:block}
+.sw{display:flex;gap:.5rem;align-items:center}
+.sw input[type=color]{width:44px;height:32px;padding:2px;background:none;border:1px solid var(--line)}
+.contrast{font-size:.72rem;color:var(--muted)}
+.contrast b{color:var(--text)}
+.contrast.fail b{color:var(--bad)}
+.verify{font-size:.75rem;color:#D9A441;margin-top:.25rem;font-style:italic}
+</style>
+</head>
+<body>
+
+<!-- Sign in. The password is NEVER in this file — /api/auth compares it
+     server-side and returns a 12h HMAC token. -->
+<div class="gate" id="gate">
+  <form id="loginForm">
+    <div><h1>Opul3nce content editor</h1><p class="sub">Sign in to load and publish content.</p></div>
+    <p class="msg bad" id="loginMsg" hidden></p>
+    <label class="f">Password<input type="password" id="pw" autocomplete="current-password" required></label>
+    <button type="submit" id="loginBtn">Sign in</button>
+  </form>
+</div>
+
+<div class="shell" id="shell">
+  <div class="pane">
+    <div class="bar">
+      <button id="publishBtn">Publish</button>
+      <button class="ghost" id="downloadBtn">Download a copy</button>
+      <button class="ghost" id="reloadBtn">Discard changes</button>
+    </div>
+    <p class="msg" id="msg" hidden></p>
+    <div id="form"></div>
+  </div>
+  <div class="preview"><iframe id="frame" src="../index.html" title="Live preview"></iframe></div>
+</div>
+
+<script>
+/* ── SECTIONS schema ───────────────────────────────────────────────────────
+   Every content.json field needs an entry here. A field with no input is not
+   wiped on publish (the editor mutates the loaded object and publishes it
+   WHOLE, never rebuilding from the DOM) — but nobody can edit it either.     */
+const SECTIONS = [
+  { title: 'Search engines & sharing', fields: [
+    { p:'meta.title', l:'Page title' },
+    { p:'meta.description', l:'Meta description', t:'textarea' },
+    { p:'meta.canonical', l:'Canonical URL' },
+    { p:'meta.ogImage', l:'Share image (assets/… or https://)' },
+  ]},
+  { title: 'Brand', fields: [
+    { p:'brand.name', l:'Wordmark' },
+    { p:'brand.monogram', l:'Monogram' },
+    { p:'brand.tagline', l:'Tagline' },
+  ]},
+  { title: 'Hero', fields: [
+    { p:'hero.kicker', l:'Kicker' },
+    { p:'hero.headline', l:'Headline' },
+    { p:'hero.standfirst', l:'Standfirst', t:'textarea' },
+    { p:'hero.ctaPrimary', l:'Primary button' },
+    { p:'hero.ctaPrimaryHref', l:'Primary button link' },
+    { p:'hero.ctaSecondary', l:'Secondary button' },
+    { p:'hero.ctaSecondaryHref', l:'Secondary button link' },
+    { p:'hero.plateNote', l:'Internal note (never rendered)', t:'textarea' },
+  ]},
+  { title: 'Position bar', list:'position.items', itemLabel:'Figure',
+    itemFields:[{k:'figure',l:'Figure'},{k:'label',l:'Label'},{k:'note',l:'Note'}],
+    fields:[{ p:'position.footnote', l:'Internal footnote (never rendered)', t:'textarea' }] },
+  { title: 'Catalogue', fields: [
+    { p:'catalogue.heading', l:'Heading' },
+    { p:'catalogue.standfirst', l:'Standfirst', t:'textarea' },
+    { p:'catalogue.rateFallback', l:'Text shown when a lot has no rate' },
+    { p:'catalogue.specNote', l:'Footnote under the catalogue', t:'textarea' },
+    { p:'catalogue.filters', l:'Filters (one per line — a lot whose class is missing here becomes unreachable)', t:'lines' },
+  ]},
+  { title: 'Catalogue — lots', list:'catalogue.lots', itemLabel:'Lot',
+    itemFields:[
+      {k:'lot',l:'Lot no.'},{k:'name',l:'Name'},{k:'year',l:'Year'},{k:'class',l:'Class'},
+      {k:'image',l:'Image path'},{k:'alt',l:'Alt text (required)'},
+      {k:'seats',l:'Seats'},{k:'drive',l:'Drivetrain'},
+      {k:'rate',l:'Rate — blank shows the fallback'},{k:'note',l:'One-line note',t:'textarea'}
+    ] },
+  { title: 'Beyond the fleet', fields:[
+    { p:'beyond.heading', l:'Heading' }, { p:'beyond.standfirst', l:'Standfirst' },
+  ], list:'beyond.items', itemLabel:'Item',
+    itemFields:[{k:'title',l:'Title'},{k:'count',l:'Count'},{k:'body',l:'Body',t:'textarea'}] },
+  { title: 'Reviews', fields:[
+    { p:'proof.heading', l:'Heading' }, { p:'proof.standfirst', l:'Standfirst' },
+    { p:'proof.attribution', l:'Attribution line under every quote' },
+    { p:'proof.sourceNote', l:'Internal note (never rendered)', t:'textarea' },
+  ], list:'proof.quotes', itemLabel:'Quote',
+    itemFields:[{k:'quote',l:'Quote',t:'textarea'},{k:'name',l:'Name'}] },
+  { title: 'The desk', fields:[
+    { p:'desk.heading', l:'Heading' }, { p:'desk.standfirst', l:'Standfirst' },
+  ], list:'desk.people', itemLabel:'Person',
+    itemFields:[{k:'name',l:'Name'},{k:'role',l:'Role'},{k:'body',l:'Bio',t:'textarea'}] },
+  { title: 'Business development', fields:[
+    { p:'business.heading', l:'Heading' }, { p:'business.standfirst', l:'Standfirst', t:'textarea' },
+    { p:'business.cta', l:'CTA label' }, { p:'business.ctaHref', l:'CTA link' },
+  ], list:'business.services', itemLabel:'Service',
+    itemFields:[{k:'title',l:'Title'},{k:'body',l:'Body',t:'textarea'}] },
+  { title: 'Enquiry form', fields:[
+    { p:'enquire.heading', l:'Heading' },
+    { p:'enquire.standfirst', l:'Standfirst', t:'textarea' },
+    { p:'enquire.interests', l:'Interest options (one per line)', t:'lines' },
+    { p:'enquire.consent', l:'Consent line' },
+    { p:'enquire.submit', l:'Submit button' },
+    { p:'enquire.success', l:'Success message' },
+    { p:'enquire.failure', l:'Failure message', t:'textarea' },
+  ]},
+  { title: 'Contact & footer', fields:[
+    { p:'contact.email', l:'Email' },
+    { p:'contact.phone', l:'Phone (displayed)' },
+    { p:'contact.phoneHref', l:'Phone link (tel:…)' },
+    { p:'contact.city', l:'City' },
+    { p:'contact.instagram', l:'Instagram URL' },
+    { p:'footer.markets', l:'Markets (one per line — stated ONCE, here)', t:'lines' },
+    { p:'footer.legal', l:'Legal link labels (one per line)', t:'lines' },
+    { p:'footer.legalHref', l:'Legal link hrefs (one per line, same order)', t:'lines' },
+  ]},
+  { title: 'Theme', theme:true, fields:[] },
+];
+
+let CONTENT = null, TOKEN = null;
+const $ = s => document.querySelector(s);
+const get = (o,p) => p.split('.').reduce((a,k)=>(a==null?a:a[k]),o);
+function set(o,p,v){ const k=p.split('.'); const last=k.pop(); let t=o; for(const s of k){ if(t[s]==null) t[s]={}; t=t[s]; } t[last]=v; }
+// ids must be selector-safe — a literal dot makes '#f_a.b' parse as id + class,
+// and every repeating field silently binds to nothing.
+const idOf = p => 'f_' + p.replace(/[^a-zA-Z0-9]/g,'_');
+const esc = s => String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+function show(el,text,cls){ el.hidden=false; el.textContent=text; el.className='msg'+(cls?' '+cls:''); }
+
+/* ── auth ── */
+$('#loginForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const btn=$('#loginBtn'), m=$('#loginMsg'); btn.disabled=true; btn.textContent='Checking…';
+  try{
+    const r = await fetch('/api/auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:$('#pw').value})});
+    if(!r.ok){ const j=await r.json().catch(()=>({})); throw new Error(j.error||'Wrong password.'); }
+    TOKEN=(await r.json()).token;
+    sessionStorage.setItem('opul_token',TOKEN);
+    $('#gate').style.display='none'; $('#shell').classList.add('on');
+    await load();
+  }catch(err){
+    m.hidden=false; m.textContent=err.message.includes('Unexpected')
+      ? 'Sign-in is unavailable — ADMIN_PASSWORD is probably not set on the server.' : err.message;
+  }finally{ btn.disabled=false; btn.textContent='Sign in'; }
+});
+
+async function load(){
+  const r = await fetch('../content.json',{cache:'no-store'});
+  CONTENT = await r.json();
+  build(); push();
+}
+
+/* ── build the form from SECTIONS ── */
+function build(){
+  const wrap=$('#form'); wrap.innerHTML='';
+  SECTIONS.forEach((sec,si)=>{
+    const d=document.createElement('details'); if(si<2) d.open=true;
+    let inner='';
+    sec.fields.forEach(f=>{
+      const v=get(CONTENT,f.p);
+      const val = f.t==='lines' ? (Array.isArray(v)?v.join('\n'):'') : (v==null?'':v);
+      const isNote = /Note|note/.test(f.l) && /never rendered/.test(f.l);
+      inner += `<label class="f">${esc(f.l)}` +
+        (f.t==='textarea'||f.t==='lines'
+          ? `<textarea id="${idOf(f.p)}" data-p="${esc(f.p)}"${f.t==='lines'?' data-lines="1"':''}>${esc(val)}</textarea>`
+          : `<input id="${idOf(f.p)}" data-p="${esc(f.p)}" value="${esc(val)}">`) +
+        `</label>` + (isNote?'<p class="verify">Internal only — this never appears on the page.</p>':'');
+    });
+    if(sec.list){
+      const arr=get(CONTENT,sec.list)||[];
+      arr.forEach((item,i)=>{
+        inner += `<div class="item"><h4>${esc(sec.itemLabel)} ${i+1}</h4>`;
+        sec.itemFields.forEach(f=>{
+          const p=`${sec.list}.${i}.${f.k}`; const v=item[f.k];
+          inner += `<label class="f">${esc(f.l)}` +
+            (f.t==='textarea'
+              ? `<textarea id="${idOf(p)}" data-p="${esc(p)}">${esc(v==null?'':v)}</textarea>`
+              : `<input id="${idOf(p)}" data-p="${esc(p)}" value="${esc(v==null?'':v)}">`) + `</label>`;
+        });
+        inner += `</div>`;
+      });
+    }
+    if(sec.theme) inner += themeUI();
+    d.innerHTML = `<summary>${esc(sec.title)}</summary><div class="body">${inner}</div>`;
+    wrap.appendChild(d);
+  });
+
+  wrap.addEventListener('input', e=>{
+    const el=e.target; const p=el.dataset.p; if(!p) return;
+    let v=el.value;
+    if(el.dataset.lines) v=v.split('\n').map(s=>s.trim()).filter(Boolean);
+    else if(v==='' && /\.rate$/.test(p)) v=null;   // blank rate → fallback, not an empty string
+    set(CONTENT,p,v);
+    push();
+  });
+  wrap.addEventListener('change', e=>{
+    if(e.target.dataset.theme){
+      set(CONTENT,'theme.palette.'+e.target.dataset.theme, e.target.value); paintContrast(); push();
+    }
+    if(e.target.id==='themeFont'){ set(CONTENT,'theme.font',e.target.value); push(); }
+  });
+  paintContrast();
+}
+
+function themeUI(){
+  const T=window.OPUL_THEME, p=Object.assign({},T.DEFAULT_PALETTE,get(CONTENT,'theme.palette')||{});
+  const fonts=Object.entries(T.FONTS).map(([id,f])=>`<option value="${id}"${get(CONTENT,'theme.font')===id?' selected':''}>${esc(f.label)}</option>`).join('');
+  const sw=k=>`<div class="sw"><input type="color" data-theme="${k}" value="${p[k]}"><span class="contrast" id="c_${k}">—</span></div>`;
+  return `<label class="f">Display face<select id="themeFont">${fonts}</select></label>
+    <label class="f">Bone (page ground)${sw('bone')}</label>
+    <label class="f">Bone 2 (alt band)${sw('bone2')}</label>
+    <label class="f">Ink (type & plates)${sw('ink')}</label>
+    <label class="f">Ink 2 (plate surface)${sw('ink2')}</label>
+    <label class="f">Gold on bone${sw('leaf')}</label>
+    <label class="f">Gold on ink${sw('leafLift')}</label>`;
+}
+
+/* Live WCAG readout in plain words — same maths the site uses, from theme.js. */
+function paintContrast(){
+  const T=window.OPUL_THEME; if(!T) return;
+  const p=Object.assign({},T.DEFAULT_PALETTE,get(CONTENT,'theme.palette')||{});
+  const pairs={ bone:[p.ink,p.bone,'body type on the page ground'],
+                bone2:[p.ink,p.bone2,'body type on the alt band'],
+                ink:[p.bone,p.ink,'page type on ink'],
+                ink2:[p.bone,p.ink2,'type on plate surface'],
+                leaf:[p.leaf,p.bone,'gold small text on bone'],
+                leafLift:[p.leafLift,p.ink,'gold small text on ink'] };
+  for(const [k,[fg,bg,what]] of Object.entries(pairs)){
+    const el=document.getElementById('c_'+k); if(!el) continue;
+    const r=T.ratio(fg,bg);
+    el.innerHTML=`<b>${r.toFixed(2)}:1</b> — ${T.verdict(r,false)} <span style="opacity:.7">(${what})</span>`;
+    el.className='contrast'+(r<4.5?' fail':'');
+  }
+}
+
+/* Push the in-progress object into the REAL page through its own renderContent —
+   not a mock-up, so the preview cannot drift from what ships. */
+function push(){
+  const f=$('#frame');
+  try{ if(f.contentWindow && f.contentWindow.renderContent) f.contentWindow.renderContent(JSON.parse(JSON.stringify(CONTENT))); }
+  catch(e){ /* frame still loading */ }
+}
+$('#frame').addEventListener('load',push);
+
+/* ── publish: mutate-and-send-whole. Never rebuild from the DOM — a field
+   without an input would be silently deleted. ── */
+$('#publishBtn').addEventListener('click', async ()=>{
+  const btn=$('#publishBtn'), m=$('#msg');
+  btn.disabled=true; btn.textContent='Publishing…';
+  try{
+    const r=await fetch('/api/publish',{method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+(TOKEN||sessionStorage.getItem('opul_token')||'')},
+      body:JSON.stringify({content:CONTENT})});
+    const j=await r.json().catch(()=>({}));
+    if(r.ok) show(m,`Published — commit ${j.commit}. Vercel is rebuilding.`,'ok');
+    else if(r.status===422) show(m,'Validation failed: '+(j.details||[]).join(' · '),'bad');
+    else if(r.status===500 && /GITHUB_CONTENT_TOKEN/.test(j.error||'')) show(m,'Publishing is not switched on yet — GITHUB_CONTENT_TOKEN is unset. Use "Download a copy" meanwhile.','bad');
+    else show(m,j.error||('Publish failed ('+r.status+')'),'bad');
+  }catch(err){ show(m,'Publish failed: '+err.message,'bad'); }
+  finally{ btn.disabled=false; btn.textContent='Publish'; }
+});
+
+// Escape hatch while the token is unset.
+$('#downloadBtn').addEventListener('click',()=>{
+  const blob=new Blob([JSON.stringify(CONTENT,null,2)],{type:'application/json'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='content.json'; a.click();
+  URL.revokeObjectURL(a.href);
+});
+$('#reloadBtn').addEventListener('click',async()=>{ await load(); show($('#msg'),'Reloaded from the published content.',''); });
+
+// A static preview server answers POST with 501, not 404 — check both.
+(async function detectStatic(){
+  try{
+    const r=await fetch('/api/auth',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});
+    if(r.status===404||r.status===501){
+      $('#gate').style.display='none'; $('#shell').classList.add('on');
+      await load();
+      show($('#msg'),'Static preview — no server, so nothing can be published. Editing and "Download a copy" work.','');
+      $('#publishBtn').disabled=true;
+    }
+  }catch(e){/* a real server is present */}
+})();
+</script>
+</body>
+</html>

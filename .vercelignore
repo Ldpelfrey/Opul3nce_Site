@@ -1,0 +1,14 @@
+node_modules
+reference
+.impeccable
+*.md
+.DS_Store
+
+# Nothing secret or local may be uploaded. This file is the only thing standing
+# between a stray dotfile and a public URL — .gitignore does NOT apply to Vercel.
+.env
+.env.*
+*.local
+.git
+.gitignore
+.vercel

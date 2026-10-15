@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /
+
+# Pitch deploy of a redesign proposal — must not be indexed.
+# Remove this file if this ever becomes the production site.
