@@ -165,7 +165,7 @@ both bone and ink; `--leaf` is bone-only and `--leaf-lift` is ink-only.
 | `GITHUB_CONTENT_TOKEN` | publishing | admin loads, Publish says "not switched on yet" |
 | `ADMIN_SESSION_SECRET` | optional | defaults to `ADMIN_PASSWORD` |
 | `GMAIL_USER` / `GMAIL_APP_PASSWORD` | the enquiry form | form returns 503 and says so honestly |
-| `ENQUIRY_TO` | optional | defaults to `johnathan@opul3nce.io` |
+| `ENQUIRY_TO` | optional | defaults to `info@opul3nce.io` |
 
 - `REPO` in `api/publish.js` and `api/revert.js` is `Ldpelfrey/Opul3nce_Site` — **create that repo or
   change the constant**, or publishing 404s.
