@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "description": "Opul3nce Luxury Concierge — flagship page. Static index.html + content.json CMS.",
-  "engines": { "node": "22.x" },
-  "dependencies": { "nodemailer": "^6.9.14" }
+  "engines": {
+    "node": "22.x"
+  },
+  "dependencies": {
+    "@vercel/blob": "^2.8.2",
+    "nodemailer": "^6.9.14"
+  }
 }

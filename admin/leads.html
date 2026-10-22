@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Opul3nce - leads</title>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#151412; --panel:#1D1C19; --line:rgba(237,233,226,.14);
+  --text:#ECE7DD; --muted:#B7AD9C; --leaf:#A8936A; --bad:#E4645A; --ok:#7FB77E;
+  --f:"Jost",ui-sans-serif,system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--f);font-size:15px;line-height:1.55}
+a{color:var(--leaf)}
+.gate{min-height:100vh;display:grid;place-items:center;padding:2rem}
+.gate form{width:min(360px,100%);display:grid;gap:1rem}
+h1{font-size:1.6rem;margin:0 0 .4rem;letter-spacing:-.01em;font-weight:500}
+.sub{color:var(--muted);font-size:.9rem;margin:0}
+input{width:100%;background:#0E0E0A;border:1px solid var(--line);color:var(--text);font-family:var(--f);font-size:.95rem;padding:.6rem .7rem;border-radius:3px}
+input:focus{outline:none;border-color:var(--leaf)}
+button{background:var(--leaf);color:#151412;border:0;font-family:var(--f);font-weight:500;font-size:.9rem;letter-spacing:.02em;padding:.7rem 1.2rem;border-radius:3px;cursor:pointer}
+button.ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
+button:disabled{opacity:.5;cursor:not-allowed}
+.msg{padding:.6rem .8rem;border-radius:3px;font-size:.85rem;background:var(--panel);border:1px solid var(--line);margin:0 0 .8rem;display:flex;gap:.55rem;align-items:baseline}
+.msg::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--leaf);flex:0 0 auto;transform:translateY(-1px)}
+.msg.bad::before{background:var(--bad)}
+.msg[hidden]{display:none!important}
+.wrap{display:none;max-width:1200px;margin:0 auto;padding:1.25rem}
+.wrap.on{display:block}
+.bar{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;justify-content:space-between;padding-bottom:.9rem;margin-bottom:.9rem;border-bottom:1px solid var(--line)}
+.bar h1{margin:0;font-size:1.3rem}
+.bar .count{color:var(--muted);font-size:.85rem;margin-left:.6rem}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:4px;background:var(--panel)}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th{text-align:left;font-weight:500;color:var(--muted);font-size:.75rem;letter-spacing:.04em;text-transform:uppercase;padding:.65rem .8rem;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:.65rem .8rem;border-bottom:1px solid var(--line);vertical-align:top}
+tr.lead{cursor:pointer}
+tr.lead:hover td{background:rgba(237,233,226,.03)}
+tr.lead[aria-expanded=true] td{background:rgba(168,147,106,.07)}
+tr.detail td{background:#181813;color:var(--text);white-space:pre-wrap}
+tr.detail .k{color:var(--muted);font-size:.78rem}
+.kind{display:inline-block;padding:.05rem .5rem;border:1px solid var(--line);border-radius:99px;font-size:.75rem;color:var(--leaf)}
+.mute{color:var(--muted)}
+.empty{padding:3rem 1rem;text-align:center;color:var(--muted)}
+.empty b{display:block;color:var(--text);font-weight:500;font-size:1.05rem;margin-bottom:.3rem}
+</style>
+</head>
+<body>
+
+<div class="gate" id="gate">
+  <form id="loginForm">
+    <div><h1>Opul3nce leads</h1><p class="sub">Sign in with the editor password.</p></div>
+    <p class="msg bad" id="loginMsg" hidden></p>
+    <label class="sub">Password<input type="password" id="pw" autocomplete="current-password" required></label>
+    <button type="submit" id="loginBtn">Sign in</button>
+  </form>
+</div>
+
+<div class="wrap" id="wrap">
+  <div class="bar">
+    <div><h1 style="display:inline">Leads</h1><span class="count" id="count"></span></div>
+    <div style="display:flex;gap:.6rem;flex-wrap:wrap">
+      <a href="./" class="ghost" style="align-self:center;font-size:.85rem">Content editor</a>
+      <button class="ghost" id="refreshBtn">Refresh</button>
+      <button id="csvBtn">Export CSV</button>
+    </div>
+  </div>
+  <p class="msg" id="msg" hidden></p>
+  <div class="tablewrap" id="tablewrap" hidden>
+    <table>
+      <thead><tr><th>When</th><th>Kind</th><th>Name</th><th>Contact</th><th>Via</th><th>What</th><th>Source</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
+  <div class="empty" id="empty" hidden><b>No leads yet.</b>Submissions from the site will appear here, newest first.</div>
+</div>
+
+<script>
+const $=s=>document.querySelector(s);
+let TOKEN=null; try{ TOKEN=sessionStorage.getItem('opul_token'); }catch(e){}
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function show(text,cls){ const m=$('#msg'); m.hidden=!text; m.textContent=text||''; m.className='msg'+(cls?' '+cls:''); }
+function authHeaders(){ return {'Authorization':'Bearer '+(TOKEN||'')}; }
+function enter(){ $('#gate').style.display='none'; $('#wrap').classList.add('on'); }
+function when(ts){ const d=new Date(ts); return isNaN(d)?esc(ts):d.toLocaleString([], {month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}); }
+function contact(l){
+  const out=[];
+  if(l.phone) out.push('<a href="tel:'+esc(l.phone.replace(/[^\d+]/g,''))+'">'+esc(l.phone)+'</a>');
+  if(l.email) out.push('<a href="mailto:'+esc(l.email)+'">'+esc(l.email)+'</a>');
+  return out.join('<br>')||'<span class="mute">-</span>';
+}
+function src(l){
+  const u=l.utm||{}; const bits=[l.source,u.source,u.medium,u.campaign].filter(Boolean);
+  return bits.length?esc(bits.join(' / ')):'<span class="mute">direct</span>';
+}
+function render(leads){
+  $('#count').textContent=leads.length?leads.length+(leads.length===1?' lead':' leads'):'';
+  $('#empty').hidden=leads.length>0; $('#tablewrap').hidden=!leads.length;
+  const tb=$('#rows'); tb.innerHTML='';
+  leads.forEach((l,i)=>{
+    const tr=document.createElement('tr'); tr.className='lead'; tr.tabIndex=0; tr.setAttribute('role','button'); tr.setAttribute('aria-expanded','false');
+    tr.innerHTML='<td>'+when(l.ts)+'</td><td><span class="kind">'+esc(l.kind)+'</span></td><td>'+(esc(l.name)||'<span class="mute">-</span>')+'</td><td>'+contact(l)+'</td><td>'+esc(l.channel)+'</td><td>'+esc([l.interest,l.item].filter(Boolean).join(' / '))+'</td><td>'+src(l)+'</td>';
+    const dt=document.createElement('tr'); dt.className='detail'; dt.hidden=true;
+    const extra=[['Dates',l.dates],['City',l.city],['Consent to text',l.consent?'yes':'no'],['Page',l.page],['Referrer',l.referrer]].filter(x=>x[1]);
+    dt.innerHTML='<td colspan="7">'+(l.message?esc(l.message):'<span class="mute">No message.</span>')+(extra.length?'\n\n'+extra.map(x=>'<span class="k">'+esc(x[0])+':</span> '+esc(x[1])).join('   '):'')+'</td>';
+    const toggle=()=>{ const open=dt.hidden; dt.hidden=!open; tr.setAttribute('aria-expanded',String(open)); };
+    tr.addEventListener('click',e=>{ if(e.target.closest('a')) return; toggle(); });
+    tr.addEventListener('keydown',e=>{ if((e.key==='Enter'||e.key===' ')&&!e.target.closest('a')){ e.preventDefault(); toggle(); } });
+    tb.append(tr,dt);
+  });
+}
+function needLogin(msg){
+  $('#wrap').classList.remove('on'); $('#gate').style.display='';
+  if(msg){ const m=$('#loginMsg'); m.hidden=false; m.textContent=msg; }
+}
+async function load(){
+  show('Loading...','');
+  try{
+    const r=await fetch('/api/leads',{headers:authHeaders(),cache:'no-store'});
+    const j=await r.json().catch(()=>({}));
+    if(r.status===401){ needLogin('Your session expired. Sign in again.'); return; }
+    enter();
+    if(r.status===503){ render([]); $('#empty').hidden=true; show('Lead storage is not switched on yet. The form is not saving leads here until a storage option is connected for this site.','bad'); $('#csvBtn').disabled=true; return; }
+    if(!r.ok){ render([]); $('#empty').hidden=true; show(j.error||'Could not load leads.','bad'); return; }
+    $('#csvBtn').disabled=false; show('');
+    render(j.leads||[]);
+  }catch(err){ enter(); render([]); $('#empty').hidden=true; show('Could not reach the server. If this is a static preview, there is no lead API to read.','bad'); }
+}
+$('#loginForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const btn=$('#loginBtn'), m=$('#loginMsg'); btn.disabled=true; btn.textContent='Checking...';
+  try{
+    const r=await fetch('/api/auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:$('#pw').value})});
+    if(!r.ok){ const j=await r.json().catch(()=>({})); throw new Error(j.error||'Wrong password.'); }
+    TOKEN=(await r.json()).token; try{ sessionStorage.setItem('opul_token',TOKEN); }catch(e){}
+    m.hidden=true; await load();
+  }catch(err){ m.hidden=false; m.textContent=err.message.includes('Unexpected')?'Sign-in is unavailable. ADMIN_PASSWORD is probably not set on the server.':err.message; }
+  finally{ btn.disabled=false; btn.textContent='Sign in'; }
+});
+$('#refreshBtn').addEventListener('click',load);
+$('#csvBtn').addEventListener('click',async()=>{
+  try{
+    const r=await fetch('/api/leads?format=csv',{headers:authHeaders()});
+    if(!r.ok) throw new Error('export failed');
+    const url=URL.createObjectURL(await r.blob()); const a=document.createElement('a');
+    a.href=url; a.download='opul3nce-leads.csv'; document.body.append(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+  }catch(e){ show('Could not export the CSV.','bad'); }
+});
+if(TOKEN) load();
+</script>
+</body>
+</html>
