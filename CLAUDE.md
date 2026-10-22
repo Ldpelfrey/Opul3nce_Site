@@ -27,7 +27,17 @@ vercel --prod                        # deploy. Repo is NOT git-connected to Verc
 
 Node is pinned to **22.x** in `package.json` — Vercel defaults new projects to 24 and the build fails.
 
-## Current state (2026-09-06)
+## Current state (2026-10-22): AWAITING JOHNATHAN'S FEEDBACK
+
+- **Branch `redesign-minimal`** (pushed, NOT deployed, NOT merged) = the minimal redesign + client funnel. `main` is still the Sept Bodoni build live at opul3nce-site.vercel.app.
+  - Jost, bone/ink, flat 3E (`assets/brand/minimal/`), 24 deck services as T3 roundels (`assets/services/`, made by `~/Opul3nce-Rebrand/pitch/web/export_services.py`).
+  - Funnel: 3-step request (contact last), lot/service prefill, fleet-menu PDF offer, ecosystem list, mobile sticky bar, utm/source attribution, `sms:` fallback when offline.
+  - Back end: `api/lead.js` (contract `api/_lib/lead.js`, `node tests/lead.test.js` 16), `api/leads.js` + `admin/leads.html` (CSV), `node tests/lead-api.test.js` 10. `api/submit.js` unused (deleting = Luke).
+  - To capture live: private Vercel Blob store (`BLOB_READ_WRITE_TOKEN`) and/or Gmail env. Neither exists; Luke's call.
+  - Screenshots: page uses `scroll-behavior:smooth`, so scroll with `behavior:'instant'` or first views land mid-page.
+- Client materials in `~/Opul3nce-Rebrand/pitch/`: A/B page LIVE at opul3nce-brand-review.vercel.app, PDFs in `pitch/pdf/` (`make_pdfs.py`).
+
+## State as of 2026-09-06 (Sept build, still on main)
 
 - **Live: https://opul3nce-site.vercel.app** — verified 200 with a logged-out curl.
 - Vercel project `opul3nce-site`, team `lucas-pelfrey-s-projects`. Repo: private `Ldpelfrey/Opul3nce_Site` (`main`), not git-connected to Vercel.
