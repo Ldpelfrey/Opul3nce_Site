@@ -239,6 +239,64 @@ input:focus,select:focus,textarea:focus{outline:none;border-bottom-width:2px;pad
 @media (max-width:900px){.enq-grid{grid-template-columns:1fr}}
 @media (max-width:520px){.f-row{grid-template-columns:1fr}}
 
+/* funnel: capture forms. Hairline chips, selected = ink with bone text. No new motion. */
+:root{--err:#8C2A1C}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.hp{position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden}
+.card{border:1px solid var(--rule);padding:clamp(20px,3vw,36px);display:grid;gap:24px;align-content:start}
+.progress{font-size:.875rem;color:var(--deep);font-weight:500}
+.step{display:grid;gap:20px;align-content:start}
+.step[hidden],.err[hidden],.offline[hidden],.cap-row[hidden],.consent[hidden],.field[hidden],.step-nav [hidden]{display:none}
+.step h3{font-size:1.375rem;font-weight:400;letter-spacing:-.01em}
+.step h3:focus{outline:none}
+.step .hint{font-size:.9375rem;color:var(--deep);margin-top:-12px}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{position:relative;display:inline-flex}
+.chip input{position:absolute;inset:0;width:100%;height:100%;margin:0;padding:0;border:0;opacity:0;cursor:pointer}
+.chip span{display:inline-block;padding:.65rem 1.05rem;border:1px solid var(--ink);font-size:.9375rem;line-height:1.4;transition:background-color .25s,color .25s}
+.chip input:checked+span{background:var(--ink);color:var(--bone)}
+.chip input:focus-visible+span{outline:2px solid var(--ink);outline-offset:3px}
+.chip:hover input:not(:checked)+span{background:rgba(21,20,18,.07)}
+.fieldset{display:grid;gap:10px;border:0;margin:0;padding:0;min-width:0}
+.fieldset legend{padding:0;font-size:.875rem;color:var(--deep);margin-bottom:10px}
+.step-nav{display:flex;gap:20px;align-items:center;justify-content:space-between}
+.step-nav .ul{border:0;padding:0 0 3px;cursor:pointer;font-size:.9375rem}
+.step-nav .btn{margin-left:auto}
+.err{color:var(--err);font-size:.9375rem;line-height:1.5}
+input[aria-invalid="true"]{border-bottom-color:var(--err)}
+.offline{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:baseline;border-top:1px solid var(--rule);padding-top:16px;font-size:.9375rem}
+.ok{font-size:1.125rem;line-height:1.5}
+.ask{display:inline-block;margin-top:10px;font-size:.875rem;color:var(--deep)}
+.item .ask{grid-column:2}
+.eco .ask{color:var(--stone)}
+.band{padding:0 0 clamp(48px,6vw,80px)}
+.band-in{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(20px,5vw,80px);padding-top:28px;align-items:end}
+.band-h{font-size:clamp(1.375rem,2.3vw,1.875rem);line-height:1.18;letter-spacing:-.01em;font-weight:400}
+.band-in .small{margin-top:8px;color:var(--deep)}
+.cap{display:grid;gap:12px}
+.cap-row{display:flex;gap:20px;align-items:end}
+.cap-row .field{flex:1;min-width:0}
+.cap-row .btn{flex:none}
+.cap-msg{font-size:.9375rem;display:grid;gap:6px}
+.eco .band-in{margin-top:56px}
+.eco .band-in .small,.eco .field label,.eco .consent{color:var(--stone)}
+.eco input{border-bottom-color:var(--bone)}
+.eco .consent input{accent-color:var(--bone)}
+.eco .btn-solid{background:var(--bone);color:var(--ink);border-color:var(--bone)}
+.eco .btn-solid:hover{background:transparent;color:var(--bone)}
+.eco .err{color:#E9A394}
+.eco .cap-msg a{color:var(--gold)}
+.sticky{display:none}
+@media (max-width:900px){.band-in{grid-template-columns:1fr;align-items:start}}
+@media (max-width:520px){.cap-row{flex-direction:column;align-items:stretch}.cap-row .btn{width:100%}}
+@media (max-width:720px){
+  .sticky{position:fixed;left:0;right:0;bottom:0;z-index:15;gap:10px;padding:10px var(--gutter) calc(10px + env(safe-area-inset-bottom));background:var(--bone);border-top:1px solid var(--rule)}
+  .sticky.show{display:flex}
+  .sticky .btn{flex:1;text-align:center;padding:.8rem .5rem}
+}
+@media (prefers-reduced-motion:reduce){.chip span{transition:none}}
+
 /* footer */
 .foot{border-top:1px solid var(--rule);padding:clamp(48px,7vw,88px) 0 40px}
 .foot-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,3fr) minmax(0,3fr);gap:40px}
@@ -271,7 +329,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-bottom-width:2px;pad
 
 <main id="top">
 
-  <section class="hero">
+  <section class="hero" id="hero">
     <div class="wrap hero-grid">
       <div>
         <p class="label" data-c="hero.kicker">Scottsdale · Miami · Los Angeles</p>
@@ -307,6 +365,26 @@ input:focus,select:focus,textarea:focus{outline:none;border-bottom-width:2px;pad
     </div>
   </section>
 
+  <section class="band" id="menu" aria-label="Fleet menu">
+    <div class="wrap">
+      <div class="band-in ruled">
+        <div>
+          <h2 class="band-h" data-c="funnel.menuHeading"></h2>
+          <p class="small" data-c="funnel.menuStandfirst"></p>
+        </div>
+        <form class="cap" id="menuForm" data-kind="menu" novalidate>
+          <div class="cap-row">
+            <div class="field"><label for="m-contact" data-c="funnel.menuLabel"></label><input id="m-contact" name="contact" autocomplete="email" aria-describedby="m-err"></div>
+            <button class="btn btn-solid" type="submit" data-c="funnel.menuSubmit"></button>
+          </div>
+          <div class="hp" aria-hidden="true"><label>Company<input name="company" tabindex="-1" autocomplete="off"></label></div>
+          <p class="err" id="m-err" hidden aria-live="polite"></p>
+          <div class="cap-msg" id="m-msg" aria-live="polite"></div>
+        </form>
+      </div>
+    </div>
+  </section>
+
   <section class="sec" id="services">
     <div class="wrap">
       <div class="sec-head">
@@ -329,6 +407,19 @@ input:focus,select:focus,textarea:focus{outline:none;border-bottom-width:2px;pad
       </div>
       <div class="items ruled" id="ecoItems" style="padding-top:44px"></div>
       <p class="cta-line"><a class="ul" id="ecoCta" href="#enquire" data-c="ecosystem.cta" data-c-attr="ecosystem.ctaHref:href"></a><span class="note" data-c="ecosystem.ctaNote"></span></p>
+      <div class="band-in ruled">
+        <h3 class="band-h" data-c="funnel.listHeading"></h3>
+        <form class="cap" id="listForm" data-kind="list" novalidate>
+          <div class="cap-row">
+            <div class="field"><label for="l-contact" data-c="funnel.listLabel"></label><input id="l-contact" name="contact" autocomplete="email" aria-describedby="l-err"></div>
+            <button class="btn btn-solid" type="submit" data-c="funnel.listSubmit"></button>
+          </div>
+          <label class="consent" id="l-consentRow" hidden><input type="checkbox" id="l-consent"><span data-c="funnel.listConsent"></span></label>
+          <div class="hp" aria-hidden="true"><label>Company<input name="company" tabindex="-1" autocomplete="off"></label></div>
+          <p class="err" id="l-err" hidden aria-live="polite"></p>
+          <div class="cap-msg" id="l-msg" aria-live="polite"></div>
+        </form>
+      </div>
     </div>
   </section>
 
@@ -368,20 +459,39 @@ input:focus,select:focus,textarea:focus{outline:none;border-bottom-width:2px;pad
             <span class="deep small" data-c="contact.city">Scottsdale, Arizona</span>
           </div>
         </div>
-        <form id="enq" novalidate>
-          <div class="f-row">
-            <div class="field"><label for="f-name">Name</label><input id="f-name" name="name" autocomplete="name" required></div>
-            <div class="field"><label for="f-phone">Phone</label><input id="f-phone" name="phone" type="tel" autocomplete="tel" required></div>
+        <form id="enq" class="card" novalidate>
+          <p class="progress"><span class="sr" data-c="funnel.stepWord"></span> <span id="stepNum">1 / 3</span></p>
+          <div class="step" data-step="1">
+            <h3 tabindex="-1" data-c="funnel.step1Title"></h3>
+            <p class="hint" data-c="funnel.step1Hint"></p>
+            <div class="chips" id="chipsWhat" role="radiogroup" aria-label="What can we arrange?"></div>
+            <div class="field" id="itemField" hidden><label for="f-item" data-c="funnel.itemLabel"></label><input id="f-item" name="item" autocomplete="off"></div>
           </div>
-          <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
-          <div class="f-row">
-            <div class="field"><label for="f-interest">Interest</label><select id="f-interest" name="interest"></select></div>
-            <div class="field"><label for="f-dates">Dates</label><input id="f-dates" name="dates" placeholder="e.g. 14–17 Oct"></div>
+          <div class="step" data-step="2" hidden>
+            <h3 tabindex="-1" data-c="funnel.step2Title"></h3>
+            <div class="field"><label for="f-dates" data-c="funnel.datesLabel"></label><input id="f-dates" name="dates" autocomplete="off" data-c-attr="funnel.datesPlaceholder:placeholder"></div>
+            <fieldset class="fieldset"><legend data-c="funnel.cityLabel"></legend><div class="chips" id="chipsCity"></div></fieldset>
+            <div class="field"><label for="f-msg" data-c="funnel.detailsLabel"></label><textarea id="f-msg" name="message"></textarea></div>
           </div>
-          <div class="field"><label for="f-msg">Details: vehicle, delivery address, anything else</label><textarea id="f-msg" name="message"></textarea></div>
-          <label class="consent"><input type="checkbox" id="f-consent" name="consent"><span data-c="enquire.consent"></span></label>
-          <button class="btn btn-solid submit" type="submit" data-c="enquire.submit">Send enquiry</button>
-          <p class="form-msg" id="formMsg" hidden role="status" aria-live="polite"></p>
+          <div class="step" data-step="3" hidden>
+            <h3 tabindex="-1" data-c="funnel.step3Title"></h3>
+            <div class="field"><label for="f-name" data-c="funnel.nameLabel"></label><input id="f-name" name="name" autocomplete="name"></div>
+            <div class="f-row">
+              <div class="field"><label for="f-phone" data-c="funnel.phoneLabel"></label><input id="f-phone" name="phone" type="tel" autocomplete="tel"></div>
+              <div class="field"><label for="f-email" data-c="funnel.emailLabel"></label><input id="f-email" name="email" type="email" autocomplete="email"></div>
+            </div>
+            <p class="hint" data-c="funnel.contactHint"></p>
+            <fieldset class="fieldset" id="channelSet"><legend data-c="funnel.channelLabel"></legend><div class="chips" id="chipsChannel"></div></fieldset>
+            <label class="consent" id="f-consentRow" hidden><input type="checkbox" id="f-consent" name="consent"><span data-c="funnel.consent"></span></label>
+          </div>
+          <div class="hp" aria-hidden="true"><label>Company<input name="company" tabindex="-1" autocomplete="off"></label></div>
+          <p class="err" id="formErr" hidden aria-live="polite"></p>
+          <div class="offline" id="offline" hidden aria-live="polite"><span id="offlineText"></span><a class="ul" id="offlineSms" href="#"></a><a class="ul" id="offlineCall" href="#"></a></div>
+          <div class="step-nav">
+            <button class="ul" type="button" id="btnBack" data-c="funnel.back" hidden></button>
+            <button class="btn btn-solid" type="button" id="btnNext" data-c="funnel.next"></button>
+            <button class="btn btn-solid" type="submit" id="btnSend" data-c="funnel.submit" hidden></button>
+          </div>
         </form>
       </div>
     </div>
@@ -419,20 +529,27 @@ input:focus,select:focus,textarea:focus{outline:none;border-bottom-width:2px;pad
   </div>
 </footer>
 
+<div class="sticky" id="sticky" aria-label="Quick actions">
+  <a class="btn btn-solid" href="#enquire" data-c="funnel.stickyPrimary"></a>
+  <a class="btn btn-line" href="sms:+16023834678" data-c="funnel.stickyText" data-c-attr="funnel.smsHref:href"></a>
+</div>
+
 <script src="epk.js" defer></script>
 <script>
 /* ── DEFAULT_CONTENT ───────────────────────────────────────────────────────
    Byte-for-byte mirror of content.json so a failed fetch degrades to the real
    content, not to placeholder text. RE-MIRROR ON EVERY CONTENT CHANGE. */
-const DEFAULT_CONTENT = {"theme":{"font":"jost","palette":{"bone":"#ECE7DD","stone":"#B7AD9C","deepStone":"#6E675C","ink":"#151412","gold":"#A8936A"}},"meta":{"title":"Opul3nce Luxury Concierge — Exotic Rental & Private Transport, Scottsdale","description":"Exotic cars, private transport, yachts and estates in Scottsdale, Miami and Los Angeles. Delivered, detailed and on time. Rates and availability on request.","ogImage":"assets/brand/minimal/og-image.png","canonical":"https://opul3nce.io/"},"brand":{"name":"OPUL3NCE","monogram":"3E","monogramImg":"assets/brand/minimal/mono-gold.svg","tagline":"Luxury Concierge","lockupImg":"assets/brand/minimal/lockup-horizontal.svg"},"hero":{"kicker":"Scottsdale · Miami · Los Angeles","headline":"The keys, delivered.","standfirst":"Exotic cars, private transport, yachts and estates — placed in your hands where you are, on the day you need them. One desk, one number, no counter.","ctaPrimary":"Request availability","ctaPrimaryHref":"#enquire","ctaSecondary":"Call (602) 383-4678","ctaSecondaryHref":"tel:+16023834678","plateNote":"Hero plate is lot 01 (G63), the client's own in-house photograph. Do NOT substitute stock; the live site's current hero is Dubai Marina and that is the exact failure being corrected.","image":"assets/mercedes-g63-amg.webp","imageAlt":"Black Mercedes-AMG G63 photographed three-quarter front under low garage light","imageCaption":"Lot 01. Mercedes-AMG G63, 2024."},"position":{"items":[{"figure":"50","label":"Vehicles in the fleet","note":"counted from the live inventory, 2026-09-06"},{"figure":"3","label":"Markets served","note":"Scottsdale · Miami · Los Angeles"},{"figure":"21","label":"Yachts on charter","note":"Miami and Los Angeles"},{"figure":"12","label":"Private estates","note":"Miami"}],"footnote":"The live site's map pins seven markets and every footer lists three. Three is what ships here until Johnathan confirms which is correct."},"catalogue":{"heading":"The catalogue","standfirst":"Every vehicle is delivered detailed, fuelled and photographed on handover. Rates vary by season, duration and delivery distance — ask and you get a number the same day.","rateFallback":"Rate on request","filters":["All","Performance","Marque SUV","Executive","Utility"],"lots":[{"lot":"01","name":"Mercedes-AMG G63","year":"2024","class":"Marque SUV","image":"assets/mercedes-g63-amg.webp","alt":"Black Mercedes-AMG G63 photographed three-quarter front under low garage light","seats":"5","drive":"4MATIC AWD","rate":null,"note":"The default answer when someone says they want to be seen."},{"lot":"02","name":"Hummer EV 3X","year":"2025","class":"Utility","image":"assets/hummer-ev-3x.webp","alt":"GMC Hummer EV 3X in black with bronze wheels, headlights lit","seats":"5","drive":"e4WD","rate":null,"note":"Electric, silent, and the only thing on this list nobody has seen before."},{"lot":"03","name":"Porsche Macan","year":"2022","class":"Performance","image":"assets/porsche-macan.webp","alt":"Silver-grey Porsche Macan photographed three-quarter front","seats":"5","drive":"AWD","rate":null,"note":"The one to take up the 51 to Sedona."},{"lot":"04","name":"BMW 740i","year":"2023","class":"Executive","image":"assets/bmw-740i.webp","alt":"White BMW 740i saloon photographed head-on in a lit garage","seats":"5","drive":"RWD","rate":null,"note":"Airport runs, client dinners, anything with a valet."},{"lot":"05","name":"Grand Wagoneer Series 3","year":"2023","class":"Marque SUV","image":"assets/grand-wagoneer.webp","alt":"Black Jeep Grand Wagoneer Series 3 photographed three-quarter front","seats":"7","drive":"4x4","rate":null,"note":"Seven seats without asking anyone to sit in a third row they resent."},{"lot":"06","name":"Corvette C8 2LT","year":"2022","class":"Performance","image":"assets/corvette-c8.webp","alt":"Blue Chevrolet Corvette C8 photographed three-quarter front","seats":"2","drive":"Mid-engine RWD","rate":null,"note":"Mid-engine. The most-requested car in the fleet."},{"lot":"07","name":"Mercedes-Benz G550","year":"2016","class":"Marque SUV","image":"assets/mercedes-g550.webp","alt":"Mercedes-Benz G550 in dark paint photographed three-quarter front","seats":"5","drive":"4MATIC AWD","rate":null,"note":"The square one, before the square one got soft."},{"lot":"08","name":"GMC Denali Ultimate","year":"2023","class":"Utility","image":"assets/denali-ultimate.webp","alt":"White GMC Denali Ultimate pickup photographed three-quarter front","seats":"5","drive":"4WD","rate":null,"note":"For the weekend that involves a trailer."},{"lot":"09","name":"Mercedes-AMG GT43","year":"2023","class":"Performance","image":"assets/mercedes-gt43.webp","alt":"Mercedes-AMG GT43 four-door coupe photographed three-quarter front","seats":"4","drive":"4MATIC+ AWD","rate":null,"note":"Four doors, and it still sounds like that."},{"lot":"10","name":"Genesis G90","year":"2022","class":"Executive","image":"assets/genesis-g90.webp","alt":"Genesis G90 executive saloon photographed three-quarter front","seats":"5","drive":"AWD","rate":null,"note":"The quiet flex. Nobody expects it and everybody notices it."}],"specNote":"Seat counts and drivetrains are manufacturer specifications for the model. Daily mileage caps, deposits, insurance terms, delivery radius and minimum age are confirmed at the time of booking.","_specNoteInternal":"[VERIFY] Mileage caps, deposits, insurance terms, delivery radius and minimum age are business facts nobody has supplied. The public note above says they are confirmed at booking, which is true and commits to nothing. Replace with real terms once Johnathan provides them."},"services":{"heading":"Services","standfirst":"One desk for travel, business and the vehicles behind both.","groups":[{"id":"travel","label":"Travel","title":"Travel Services","standfirst":"Vehicles, aviation, stays and time on the water. Transport, hospitality and the details around your experience.","cta":"Tell us your destination and dates.","ctaNote":"We will confirm the available options.","ctaHref":"#enquire","items":[{"name":"Luxury & exotic car rentals","body":"Premium vehicles, with delivery and pickup around your plans.","icon":"assets/services/luxury-exotic-car-rentals.webp"},{"name":"Private aviation","body":"Jet charters, aircraft sourcing and sales, with travel coordination.","icon":"assets/services/private-aviation.webp"},{"name":"Luxury stays & real estate","body":"Luxury stays, property sourcing and real estate introductions.","icon":"assets/services/luxury-stays-real-estate.webp"},{"name":"Boats & yachts","body":"Private charters and experiences, with itinerary and hospitality coordination.","icon":"assets/services/boats-yachts.webp"},{"name":"Executive transportation","body":"Black cars, SUVs, Sprinters and buses for transfers, groups and events.","icon":"assets/services/executive-transportation.webp"},{"name":"Private dining & nightlife","body":"Private chefs, catering, dining reservations and Scottsdale nightlife access.","icon":"assets/services/private-dining-nightlife.webp"},{"name":"Security & discretion","body":"Private and armed security coordination for travel, drivers and events.","icon":"assets/services/security-discretion.webp"},{"name":"Events & experiences","body":"Venues, vendors and talent for private events and tailored experiences.","icon":"assets/services/events-experiences.webp"}]},{"id":"auto","label":"Auto","title":"Auto Services","standfirst":"Vehicle sourcing, personalization and ongoing care.","cta":"Vehicle-owner partnerships.","ctaNote":"Ask about rental operations and asset participation.","ctaHref":"#enquire","items":[{"name":"Source & acquire","body":"Vehicle sourcing and purchase options matched to your preferences and budget.","icon":"assets/services/source-acquire.webp"},{"name":"Sell & consign","body":"Vehicle sales and consignment support, with presentation and buyer introductions.","icon":"assets/services/sell-consign.webp"},{"name":"Customize & protect","body":"Tint, wraps, lighting, exhaust and performance or cosmetic upgrades.","icon":"assets/services/customize-protect.webp"},{"name":"Detail & maintain","body":"Detailing, reconditioning, maintenance and specialist service coordination.","icon":"assets/services/detail-maintain.webp"}]},{"id":"business","label":"Business","title":"Business Services","standfirst":"A separate practice, run by the same people. Brand, content and customer acquisition. Systems and resources behind the business.","cta":"Start with your business goals.","ctaNote":"We will define the right scope.","ctaHref":"#enquire","items":[{"name":"Branding & design","body":"Brand identity, logos and marketing materials with a consistent look.","icon":"assets/services/branding-design.webp"},{"name":"Media production","body":"Photography, video and event content, from production through editing.","icon":"assets/services/media-production.webp"},{"name":"Websites & funnels","body":"Websites and landing pages with booking, forms and CRM connections.","icon":"assets/services/websites-funnels.webp"},{"name":"Paid ads & social growth","body":"Meta, Google and TikTok ads, social strategy, content and reporting.","icon":"assets/services/paid-ads-social-growth.webp"},{"name":"CRM & sales systems","body":"GoHighLevel builds, sales pipelines and automated follow-up.","icon":"assets/services/crm-sales-systems.webp"},{"name":"AI & automation","body":"AI assistants, integrations and workflows with clear team handoffs.","icon":"assets/services/ai-automation.webp"},{"name":"Merchant processing","body":"Payment solutions, gateways and checkout integrations for your business.","icon":"assets/services/merchant-processing.webp"},{"name":"Business credit & funding","body":"Credit-building resources and financing introductions, subject to provider eligibility and terms.","icon":"assets/services/business-credit-funding.webp"}]}]},"ecosystem":{"label":"Ecosystem","heading":"The OPUL3NCE Ecosystem","standfirst":"Relationships, experiences and opportunities within the OPUL3NCE network.","cta":"Connect with the OPUL3NCE ecosystem.","ctaNote":"Explore events, memberships, collaborations and the 4-A’s program.","ctaHref":"#enquire","items":[{"name":"4-A’s program","body":"Affiliate, Ambassador, Athlete and Agency partnerships. Application and interview required.","icon":"assets/services/4-a-s-program.webp"},{"name":"Events","body":"Cars & Creatives, private events and curated networking experiences.","icon":"assets/services/events.webp"},{"name":"Memberships","body":"Membership opportunities within the OPUL3NCE ecosystem.","icon":"assets/services/memberships.webp"},{"name":"Brand collaborations","body":"Brand partnerships, shared experiences and curated introductions.","icon":"assets/services/brand-collaborations.webp"}]},"proof":{"heading":"What renters actually said","standfirst":"Unedited, and attributed the way they were left.","attribution":"Verified renter review","sourceNote":"[VERIFY] These reviews use host/pickup/drop-off language, which indicates a peer-to-peer rental platform. Label the source precisely once Johnathan confirms it — a checkable source is stronger than an unattributed five-star card.","quotes":[{"quote":"Jonathan is hands down the best host I've ever worked with in Phoenix. When I had a vehicle issue, he immediately swapped me into another car and made sure I was taken care of.","name":"Derrick"},{"quote":"Super professional, easy in and out, super transparent.","name":"Vince"},{"quote":"Car was very clean, and easy to pickup and drop off thanks to the detailed directions from the host. Very good and quick on communicating.","name":"Ericka"},{"quote":"Great experience — Robert and Jonathan are the best, right on time. Vehicle was nicely cleaned up. Great customer service.","name":"Eddie"},{"quote":"The quality of the car was great. Vehicle performed well and got a lot of looks and eyes. The C8 is a great car.","name":"Brandon"},{"quote":"My experience was amazing and the host was very nice and explained how to use the vehicle well. I look forward to booking again.","name":"Regina"}]},"desk":{"heading":"The desk","standfirst":"Four people. You will deal with one of them, not a queue.","people":[{"name":"Johnathan Eden","role":"Founder","body":"Runs the fleet and answers the phone. Background in sales and business development across luxury retail, publishing, fine jewellery and technology."},{"name":"Danielle Fox","role":"Co-founder, Marketing","body":"Brand, PR and partnerships. Came up through luxury branding, fine jewellery, insurance and car rental."},{"name":"William Anthony","role":"Finance","body":"Contracts, deposits and merchant terms."},{"name":"Calvin Alfaro","role":"Creative Director","body":"Shoots the fleet and the campaigns. Every vehicle photograph on this page is in-house work."}]},"enquire":{"heading":"Make an enquiry","standfirst":"Tell us the dates and the vehicle, or the service. You get a rate and a confirmation, not a callback queue.","interests":["Exotic car rental","Executive transportation","Private aviation","Stays & yachts","Business services","Auto services","Ecosystem & memberships"],"consent":"I consent to receive SMS and email about this enquiry.","submit":"Send enquiry","success":"Received. You will hear back from the desk today.","failure":"That did not send. Call +1 (602) 383-4678 or email info@opul3nce.io and we will pick it up."},"contact":{"email":"info@opul3nce.io","phone":"+1 (602) 383-4678","phoneHref":"tel:+16023834678","city":"Scottsdale, Arizona","instagram":"https://www.instagram.com/opul3nce.io/"},"footer":{"markets":["Scottsdale, AZ","Miami, FL","Los Angeles, CA"],"legal":["Terms and Conditions","Privacy Policy"],"legalHref":["https://opul3nce.io/terms-of-service","https://opul3nce.io/privacy-policy"],"_legalHrefNote":"Absolute URLs to the client's real legal pages, because this pitch deploy has no /terms-of-service or /privacy-policy of its own — relative paths 404'd here. Switch back to relative paths if this becomes the production site."}};
+const DEFAULT_CONTENT = {"theme":{"font":"jost","palette":{"bone":"#ECE7DD","stone":"#B7AD9C","deepStone":"#6E675C","ink":"#151412","gold":"#A8936A"}},"meta":{"title":"Opul3nce Luxury Concierge — Exotic Rental & Private Transport, Scottsdale","description":"Exotic cars, private transport, yachts and estates in Scottsdale, Miami and Los Angeles. Delivered, detailed and on time. Rates and availability on request.","ogImage":"assets/brand/minimal/og-image.png","canonical":"https://opul3nce.io/"},"brand":{"name":"OPUL3NCE","monogram":"3E","monogramImg":"assets/brand/minimal/mono-gold.svg","tagline":"Luxury Concierge","lockupImg":"assets/brand/minimal/lockup-horizontal.svg"},"hero":{"kicker":"Scottsdale · Miami · Los Angeles","headline":"The keys, delivered.","standfirst":"Exotic cars, private transport, yachts and estates — placed in your hands where you are, on the day you need them. One desk, one number, no counter.","ctaPrimary":"Request availability","ctaPrimaryHref":"#enquire","ctaSecondary":"Call (602) 383-4678","ctaSecondaryHref":"tel:+16023834678","plateNote":"Hero plate is lot 01 (G63), the client's own in-house photograph. Do NOT substitute stock; the live site's current hero is Dubai Marina and that is the exact failure being corrected.","image":"assets/mercedes-g63-amg.webp","imageAlt":"Black Mercedes-AMG G63 photographed three-quarter front under low garage light","imageCaption":"Lot 01. Mercedes-AMG G63, 2024."},"position":{"items":[{"figure":"50","label":"Vehicles in the fleet","note":"counted from the live inventory, 2026-09-06"},{"figure":"3","label":"Markets served","note":"Scottsdale · Miami · Los Angeles"},{"figure":"21","label":"Yachts on charter","note":"Miami and Los Angeles"},{"figure":"12","label":"Private estates","note":"Miami"}],"footnote":"The live site's map pins seven markets and every footer lists three. Three is what ships here until Johnathan confirms which is correct."},"catalogue":{"heading":"The catalogue","standfirst":"Every vehicle is delivered detailed, fuelled and photographed on handover. Rates vary by season, duration and delivery distance — ask and you get a number the same day.","rateFallback":"Rate on request","filters":["All","Performance","Marque SUV","Executive","Utility"],"lots":[{"lot":"01","name":"Mercedes-AMG G63","year":"2024","class":"Marque SUV","image":"assets/mercedes-g63-amg.webp","alt":"Black Mercedes-AMG G63 photographed three-quarter front under low garage light","seats":"5","drive":"4MATIC AWD","rate":null,"note":"The default answer when someone says they want to be seen."},{"lot":"02","name":"Hummer EV 3X","year":"2025","class":"Utility","image":"assets/hummer-ev-3x.webp","alt":"GMC Hummer EV 3X in black with bronze wheels, headlights lit","seats":"5","drive":"e4WD","rate":null,"note":"Electric, silent, and the only thing on this list nobody has seen before."},{"lot":"03","name":"Porsche Macan","year":"2022","class":"Performance","image":"assets/porsche-macan.webp","alt":"Silver-grey Porsche Macan photographed three-quarter front","seats":"5","drive":"AWD","rate":null,"note":"The one to take up the 51 to Sedona."},{"lot":"04","name":"BMW 740i","year":"2023","class":"Executive","image":"assets/bmw-740i.webp","alt":"White BMW 740i saloon photographed head-on in a lit garage","seats":"5","drive":"RWD","rate":null,"note":"Airport runs, client dinners, anything with a valet."},{"lot":"05","name":"Grand Wagoneer Series 3","year":"2023","class":"Marque SUV","image":"assets/grand-wagoneer.webp","alt":"Black Jeep Grand Wagoneer Series 3 photographed three-quarter front","seats":"7","drive":"4x4","rate":null,"note":"Seven seats without asking anyone to sit in a third row they resent."},{"lot":"06","name":"Corvette C8 2LT","year":"2022","class":"Performance","image":"assets/corvette-c8.webp","alt":"Blue Chevrolet Corvette C8 photographed three-quarter front","seats":"2","drive":"Mid-engine RWD","rate":null,"note":"Mid-engine. The most-requested car in the fleet."},{"lot":"07","name":"Mercedes-Benz G550","year":"2016","class":"Marque SUV","image":"assets/mercedes-g550.webp","alt":"Mercedes-Benz G550 in dark paint photographed three-quarter front","seats":"5","drive":"4MATIC AWD","rate":null,"note":"The square one, before the square one got soft."},{"lot":"08","name":"GMC Denali Ultimate","year":"2023","class":"Utility","image":"assets/denali-ultimate.webp","alt":"White GMC Denali Ultimate pickup photographed three-quarter front","seats":"5","drive":"4WD","rate":null,"note":"For the weekend that involves a trailer."},{"lot":"09","name":"Mercedes-AMG GT43","year":"2023","class":"Performance","image":"assets/mercedes-gt43.webp","alt":"Mercedes-AMG GT43 four-door coupe photographed three-quarter front","seats":"4","drive":"4MATIC+ AWD","rate":null,"note":"Four doors, and it still sounds like that."},{"lot":"10","name":"Genesis G90","year":"2022","class":"Executive","image":"assets/genesis-g90.webp","alt":"Genesis G90 executive saloon photographed three-quarter front","seats":"5","drive":"AWD","rate":null,"note":"The quiet flex. Nobody expects it and everybody notices it."}],"specNote":"Seat counts and drivetrains are manufacturer specifications for the model. Daily mileage caps, deposits, insurance terms, delivery radius and minimum age are confirmed at the time of booking.","_specNoteInternal":"[VERIFY] Mileage caps, deposits, insurance terms, delivery radius and minimum age are business facts nobody has supplied. The public note above says they are confirmed at booking, which is true and commits to nothing. Replace with real terms once Johnathan provides them."},"services":{"heading":"Services","standfirst":"One desk for travel, business and the vehicles behind both.","groups":[{"id":"travel","label":"Travel","title":"Travel Services","standfirst":"Vehicles, aviation, stays and time on the water. Transport, hospitality and the details around your experience.","cta":"Tell us your destination and dates.","ctaNote":"We will confirm the available options.","ctaHref":"#enquire","items":[{"name":"Luxury & exotic car rentals","body":"Premium vehicles, with delivery and pickup around your plans.","icon":"assets/services/luxury-exotic-car-rentals.webp","chip":"Exotic car"},{"name":"Private aviation","body":"Jet charters, aircraft sourcing and sales, with travel coordination.","icon":"assets/services/private-aviation.webp","chip":"Private aviation"},{"name":"Luxury stays & real estate","body":"Luxury stays, property sourcing and real estate introductions.","icon":"assets/services/luxury-stays-real-estate.webp","chip":"Stays & yachts"},{"name":"Boats & yachts","body":"Private charters and experiences, with itinerary and hospitality coordination.","icon":"assets/services/boats-yachts.webp","chip":"Stays & yachts"},{"name":"Executive transportation","body":"Black cars, SUVs, Sprinters and buses for transfers, groups and events.","icon":"assets/services/executive-transportation.webp","chip":"Executive transport"},{"name":"Private dining & nightlife","body":"Private chefs, catering, dining reservations and Scottsdale nightlife access.","icon":"assets/services/private-dining-nightlife.webp","chip":"Events & dining"},{"name":"Security & discretion","body":"Private and armed security coordination for travel, drivers and events.","icon":"assets/services/security-discretion.webp","chip":"Security"},{"name":"Events & experiences","body":"Venues, vendors and talent for private events and tailored experiences.","icon":"assets/services/events-experiences.webp","chip":"Events & dining"}],"chip":"Exotic car"},{"id":"auto","label":"Auto","title":"Auto Services","standfirst":"Vehicle sourcing, personalization and ongoing care.","cta":"Vehicle-owner partnerships.","ctaNote":"Ask about rental operations and asset participation.","ctaHref":"#enquire","items":[{"name":"Source & acquire","body":"Vehicle sourcing and purchase options matched to your preferences and budget.","icon":"assets/services/source-acquire.webp"},{"name":"Sell & consign","body":"Vehicle sales and consignment support, with presentation and buyer introductions.","icon":"assets/services/sell-consign.webp"},{"name":"Customize & protect","body":"Tint, wraps, lighting, exhaust and performance or cosmetic upgrades.","icon":"assets/services/customize-protect.webp"},{"name":"Detail & maintain","body":"Detailing, reconditioning, maintenance and specialist service coordination.","icon":"assets/services/detail-maintain.webp"}],"chip":"Auto services"},{"id":"business","label":"Business","title":"Business Services","standfirst":"A separate practice, run by the same people. Brand, content and customer acquisition. Systems and resources behind the business.","cta":"Start with your business goals.","ctaNote":"We will define the right scope.","ctaHref":"#enquire","items":[{"name":"Branding & design","body":"Brand identity, logos and marketing materials with a consistent look.","icon":"assets/services/branding-design.webp"},{"name":"Media production","body":"Photography, video and event content, from production through editing.","icon":"assets/services/media-production.webp"},{"name":"Websites & funnels","body":"Websites and landing pages with booking, forms and CRM connections.","icon":"assets/services/websites-funnels.webp"},{"name":"Paid ads & social growth","body":"Meta, Google and TikTok ads, social strategy, content and reporting.","icon":"assets/services/paid-ads-social-growth.webp"},{"name":"CRM & sales systems","body":"GoHighLevel builds, sales pipelines and automated follow-up.","icon":"assets/services/crm-sales-systems.webp"},{"name":"AI & automation","body":"AI assistants, integrations and workflows with clear team handoffs.","icon":"assets/services/ai-automation.webp"},{"name":"Merchant processing","body":"Payment solutions, gateways and checkout integrations for your business.","icon":"assets/services/merchant-processing.webp"},{"name":"Business credit & funding","body":"Credit-building resources and financing introductions, subject to provider eligibility and terms.","icon":"assets/services/business-credit-funding.webp"}],"chip":"Business services"}]},"ecosystem":{"label":"Ecosystem","heading":"The OPUL3NCE Ecosystem","standfirst":"Relationships, experiences and opportunities within the OPUL3NCE network.","cta":"Connect with the OPUL3NCE ecosystem.","ctaNote":"Explore events, memberships, collaborations and the 4-A’s program.","ctaHref":"#enquire","items":[{"name":"4-A’s program","body":"Affiliate, Ambassador, Athlete and Agency partnerships. Application and interview required.","icon":"assets/services/4-a-s-program.webp"},{"name":"Events","body":"Cars & Creatives, private events and curated networking experiences.","icon":"assets/services/events.webp"},{"name":"Memberships","body":"Membership opportunities within the OPUL3NCE ecosystem.","icon":"assets/services/memberships.webp"},{"name":"Brand collaborations","body":"Brand partnerships, shared experiences and curated introductions.","icon":"assets/services/brand-collaborations.webp"}],"chip":"Ecosystem"},"proof":{"heading":"What renters actually said","standfirst":"Unedited, and attributed the way they were left.","attribution":"Verified renter review","sourceNote":"[VERIFY] These reviews use host/pickup/drop-off language, which indicates a peer-to-peer rental platform. Label the source precisely once Johnathan confirms it — a checkable source is stronger than an unattributed five-star card.","quotes":[{"quote":"Jonathan is hands down the best host I've ever worked with in Phoenix. When I had a vehicle issue, he immediately swapped me into another car and made sure I was taken care of.","name":"Derrick"},{"quote":"Super professional, easy in and out, super transparent.","name":"Vince"},{"quote":"Car was very clean, and easy to pickup and drop off thanks to the detailed directions from the host. Very good and quick on communicating.","name":"Ericka"},{"quote":"Great experience — Robert and Jonathan are the best, right on time. Vehicle was nicely cleaned up. Great customer service.","name":"Eddie"},{"quote":"The quality of the car was great. Vehicle performed well and got a lot of looks and eyes. The C8 is a great car.","name":"Brandon"},{"quote":"My experience was amazing and the host was very nice and explained how to use the vehicle well. I look forward to booking again.","name":"Regina"}]},"desk":{"heading":"The desk","standfirst":"Four people. You will deal with one of them, not a queue.","people":[{"name":"Johnathan Eden","role":"Founder","body":"Runs the fleet and answers the phone. Background in sales and business development across luxury retail, publishing, fine jewellery and technology."},{"name":"Danielle Fox","role":"Co-founder, Marketing","body":"Brand, PR and partnerships. Came up through luxury branding, fine jewellery, insurance and car rental."},{"name":"William Anthony","role":"Finance","body":"Contracts, deposits and merchant terms."},{"name":"Calvin Alfaro","role":"Creative Director","body":"Shoots the fleet and the campaigns. Every vehicle photograph on this page is in-house work."}]},"enquire":{"heading":"Request availability","standfirst":"Tell the desk what you need, then how to reach you. Contact details come last."},"contact":{"email":"info@opul3nce.io","phone":"+1 (602) 383-4678","phoneHref":"tel:+16023834678","city":"Scottsdale, Arizona","instagram":"https://www.instagram.com/opul3nce.io/"},"footer":{"markets":["Scottsdale, AZ","Miami, FL","Los Angeles, CA"],"legal":["Terms and Conditions","Privacy Policy"],"legalHref":["https://opul3nce.io/terms-of-service","https://opul3nce.io/privacy-policy"],"_legalHrefNote":"Absolute URLs to the client's real legal pages, because this pitch deploy has no /terms-of-service or /privacy-policy of its own — relative paths 404'd here. Switch back to relative paths if this becomes the production site."},"funnel":{"step1Title":"What can we arrange?","step1Hint":"Choose one. You can add detail on the next step.","chips":["Exotic car","Executive transport","Private aviation","Stays & yachts","Security","Events & dining","Auto services","Business services","Ecosystem"],"itemLabel":"Vehicle or service","step2Title":"When and where?","datesLabel":"Dates","datesPlaceholder":"e.g. 14-17 Oct","cityLabel":"City","cities":["Scottsdale","Miami","Los Angeles","Elsewhere"],"detailsLabel":"Details (optional): delivery address, anything else","step3Title":"How should we reach you?","nameLabel":"Name","phoneLabel":"Phone","emailLabel":"Email","contactHint":"Phone, email or both.","channelLabel":"Preferred method","channels":["Text","Call","WhatsApp","Email"],"consent":"I agree to receive texts about this request. Reply STOP to opt out.","back":"Back","next":"Continue","submit":"Send request","sending":"Sending","success":"Received. The desk will reply by your chosen method.","offline":"Our form is offline.","offlineLink":"Send this as a text instead.","offlineCall":"or call (602) 383-4678","smsHref":"sms:+16023834678","smsIntro":"Opul3nce request","smsMenu":"Please send me the Opul3nce fleet menu.","smsList":"Please add me to the Opul3nce events and memberships list.","problemsLead":"Please check","menuHeading":"Get the full fleet menu, every vehicle on one page","menuStandfirst":"Add an email or phone number and the menu is yours to download.","menuLabel":"Email or phone","menuSubmit":"Get the menu","menuHref":"assets/opul3nce-fleet-menu.pdf","menuLink":"Download the fleet menu (PDF)","menuSaved":"Saved. We will only use this to send you the menu and availability.","listHeading":"Hear about events and memberships first","listLabel":"Email or phone","listSubmit":"Add me","listConsent":"I agree to receive texts about events and memberships. Reply STOP to opt out.","listSaved":"Saved. We will only use this to tell you about events and memberships.","stickyPrimary":"Request availability","stickyText":"Text us","askLink":"Ask about this","stepWord":"Step","lotChip":"Exotic car","pName":"name","pContact":"a phone number or email","pEmail":"a valid email","pPhone":"a valid phone number","pChannel":"how we should reach you","pChannelPhone":"a phone number for that contact method","pChannelEmail":"an email for that contact method","pConsent":"consent to be texted"}};
 let CONTENT = DEFAULT_CONTENT;
 
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const get = (o, p) => p.split('.').reduce((a, k) => (a == null ? a : a[k]), o);
 
-function itemHTML(i) {
+function itemHTML(i, groupChip) {
+  const chip = i.chip || groupChip || '';
   return `<div class="item"><div class="roundel"><img src="${esc(i.icon)}" alt="" width="244" height="244" loading="lazy" decoding="async"></div>
-    <h3>${esc(i.name)}</h3><p>${esc(i.body)}</p></div>`;
+    <h3>${esc(i.name)}</h3><p>${esc(i.body)}</p>
+    <a class="ul ask" href="#enquire" data-ask="${esc(i.name)}" data-chip="${esc(chip)}">${esc(get(CONTENT, 'funnel.askLink') || 'Ask about this')}</a></div>`;
 }
 
 function renderContent(c) {
@@ -484,12 +601,12 @@ function renderContent(c) {
   const groupHTML = g => `
     <article class="group ruled" id="${esc(g.id)}">
       <div class="group-head"><div><p class="label">${esc(g.label)}</p><h3>${esc(g.title)}</h3></div><p>${esc(g.standfirst)}</p></div>
-      <div class="items">${(g.items || []).map(itemHTML).join('')}</div>
-      <p class="cta-line"><a class="ul" href="${esc(g.ctaHref || '#enquire')}">${esc(g.cta)}</a><span class="note">${esc(g.ctaNote)}</span></p>
+      <div class="items">${(g.items || []).map(i => itemHTML(i, g.chip)).join('')}</div>
+      <p class="cta-line"><a class="ul" href="${esc(g.ctaHref || '#enquire')}" data-chip="${esc(g.chip || '')}">${esc(g.cta)}</a><span class="note">${esc(g.ctaNote)}</span></p>
     </article>`;
   document.getElementById('groups').innerHTML = groups.filter(g => g.id !== 'business').map(groupHTML).join('');
   document.getElementById('bizGroup').innerHTML = groups.filter(g => g.id === 'business').map(groupHTML).join('');
-  document.getElementById('ecoItems').innerHTML = (get(CONTENT, 'ecosystem.items') || []).map(itemHTML).join('');
+  document.getElementById('ecoItems').innerHTML = (get(CONTENT, 'ecosystem.items') || []).map(i => itemHTML(i, get(CONTENT, 'ecosystem.chip'))).join('');
 
   const attr = get(CONTENT, 'proof.attribution') || '';
   document.getElementById('quotes').innerHTML = (get(CONTENT, 'proof.quotes') || []).map(q => `
@@ -498,7 +615,7 @@ function renderContent(c) {
   document.getElementById('deskGrid').innerHTML = (get(CONTENT, 'desk.people') || []).map(p => `
     <div class="person ruled"><span class="label">${esc(p.role)}</span><h3>${esc(p.name)}</h3><p>${esc(p.body)}</p></div>`).join('');
 
-  document.getElementById('f-interest').innerHTML = (get(CONTENT, 'enquire.interests') || []).map(i => `<option value="${esc(i)}">${esc(i)}</option>`).join('');
+  renderChips();
 
   document.getElementById('footMarkets').innerHTML = (get(CONTENT, 'footer.markets') || []).map(m => `<li>${esc(m)}</li>`).join('');
   const lg = get(CONTENT, 'footer.legal') || [], lh = get(CONTENT, 'footer.legalHref') || [];
@@ -506,7 +623,6 @@ function renderContent(c) {
   document.getElementById('year').textContent = new Date().getFullYear();
 
   wireFilters();
-  wireLotCTAs();
   observeRules();
 }
 
@@ -526,16 +642,6 @@ function markWide() {
   const vis = [...document.querySelectorAll('.lot')].filter(l => !l.hidden);
   vis.forEach(l => l.classList.remove('wide'));
   if (vis.length > 1 && vis.length % 3 === 1) vis[vis.length - 1].classList.add('wide');
-}
-
-function wireLotCTAs() {
-  document.querySelectorAll('.lot-cta').forEach(a => a.addEventListener('click', () => {
-    const msg = document.getElementById('f-msg');
-    const sel = document.getElementById('f-interest');
-    if (sel) sel.value = 'Exotic car rental';
-    if (msg && !msg.value.trim()) msg.value = `Enquiring about the ${a.dataset.lot}. `;
-    setTimeout(() => msg && msg.focus({ preventScroll: true }), 600);
-  }));
 }
 
 /* ── motion: line reveal on rules. Reduced motion or no observer = rules simply drawn. ── */
@@ -561,34 +667,251 @@ function observeRules() {
   els.forEach(e => RULE_IO.observe(e));
 }
 
-/* ── form: posts to api/submit.js. A mailto: button sends nothing. ── */
-function wireForm() {
-  const form = document.getElementById('enq');
-  const msg = document.getElementById('formMsg');
-  const btn = form.querySelector('button.submit');
-  form.addEventListener('submit', async (e) => {
+/* ── funnel: concierge request (3 steps), fleet-menu offer, ecosystem list. All post to /api/lead.
+   Validation mirrors api/_lib/lead.js so people see problems before they submit. ── */
+const F = k => get(CONTENT, 'funnel.' + k);
+const CH_VALUES = ['text', 'call', 'whatsapp', 'email'];
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+const digitsOf = s => String(s || '').replace(/\D/g, '');
+const clean = v => String(v == null ? '' : v).replace(/[\u0000-\u001f\u007f]/g, ' ').trim();
+const $id = id => document.getElementById(id);
+
+/* attribution: utm_* from the URL, kept in sessionStorage (memory if storage is blocked) */
+const UTM = {};
+(function readUtm() {
+  let stored = {};
+  try { stored = JSON.parse(sessionStorage.getItem('opul_utm') || '{}') || {}; } catch (e) {}
+  const q = new URLSearchParams(location.search);
+  let hit = false;
+  ['source', 'medium', 'campaign', 'term', 'content'].forEach(k => {
+    const v = q.get('utm_' + k);
+    if (v) { stored[k] = v; hit = true; }
+  });
+  Object.assign(UTM, stored);
+  if (hit) { try { sessionStorage.setItem('opul_utm', JSON.stringify(stored)); } catch (e) {} }
+})();
+
+let REQ_SOURCE = 'enquire';
+let STEP = 1;
+
+function radioHTML(name, values, labels, checked) {
+  return values.map((v, i) => `<label class="chip"><input type="radio" name="${name}" value="${esc(v)}"${v === checked ? ' checked' : ''}><span>${esc(labels ? labels[i] : v)}</span></label>`).join('');
+}
+function checkedVal(name) { const el = document.querySelector(`#enq input[name="${name}"]:checked`); return el ? el.value : ''; }
+function renderChips() {
+  const keepWhat = checkedVal('interest'), keepCity = checkedVal('city'), keepCh = checkedVal('channel');
+  $id('chipsWhat').innerHTML = radioHTML('interest', F('chips') || [], null, keepWhat);
+  $id('chipsCity').innerHTML = radioHTML('city', F('cities') || [], null, keepCity);
+  const labels = F('channels') || [];
+  $id('chipsChannel').innerHTML = radioHTML('channel', CH_VALUES, labels, keepCh);
+  syncConsent();
+}
+function setChip(v) {
+  const el = [...document.querySelectorAll('#enq input[name="interest"]')].find(x => x.value === v);
+  if (el) el.checked = true;
+}
+function setItem(v) {
+  $id('f-item').value = v || '';
+  $id('itemField').hidden = !$id('f-item').value;
+}
+function syncConsent() {
+  const ch = checkedVal('channel');
+  $id('f-consentRow').hidden = !(ch === 'text' || ch === 'whatsapp');
+}
+
+function goStep(n, focus) {
+  STEP = n;
+  document.querySelectorAll('#enq .step').forEach(s => { s.hidden = Number(s.dataset.step) !== n; });
+  $id('stepNum').textContent = n + ' / 3';
+  $id('btnBack').hidden = n === 1;
+  $id('btnNext').hidden = n === 3;
+  $id('btnSend').hidden = n !== 3;
+  $id('formErr').hidden = true;
+  if (focus) { const h = document.querySelector(`#enq .step[data-step="${n}"] h3`); if (h) h.focus({ preventScroll: true }); }
+}
+
+function openRequest(o) {
+  if (o.chip) setChip(o.chip);
+  if (o.item != null) setItem(o.item);
+  REQ_SOURCE = o.source || 'enquire';
+  $id('offline').hidden = true;
+  goStep(o.step || 1, false);
+  $id('enquire').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  setTimeout(() => goStep(o.step || 1, true), 350);
+}
+
+/* mirror of api/_lib/lead.js validate(); returns [[code, field-id]] */
+function check(l, ids) {
+  const p = [];
+  const d = digitsOf(l.phone);
+  if (l.email && !EMAIL_RE.test(l.email)) p.push(['pEmail', ids.email]);
+  if (l.phone && (d.length < 7 || d.length > 15)) p.push(['pPhone', ids.phone]);
+  if (!l.email && !l.phone) p.push(['pContact', ids.phone]);
+  if (l.kind === 'request' && !l.name) p.push(['pName', 'f-name']);
+  if (l.kind === 'request' && !l.channel) p.push(['pChannel', null]);
+  if (['text', 'call', 'whatsapp'].includes(l.channel) && !l.phone) p.push(['pChannelPhone', ids.phone]);
+  if (l.channel === 'email' && !l.email) p.push(['pChannelEmail', ids.email]);
+  if (['text', 'whatsapp'].includes(l.channel) && !l.consent) p.push(['pConsent', ids.consent]);
+  return p;
+}
+function showProblems(errEl, form, probs) {
+  form.querySelectorAll('[aria-invalid]').forEach(x => x.removeAttribute('aria-invalid'));
+  probs.forEach(([, id]) => { const el = id && $id(id); if (el) el.setAttribute('aria-invalid', 'true'); });
+  const texts = [...new Set(probs.map(([c]) => F(c)))];
+  errEl.textContent = `${F('problemsLead')}: ${texts.join('; ')}.`;
+  errEl.hidden = false;
+  const first = probs.map(([, id]) => id && $id(id)).find(Boolean);
+  if (first) first.focus();
+}
+
+async function postLead(body) {
+  const payload = Object.assign({
+    page: location.pathname + location.search, referrer: document.referrer, utm: UTM,
+    company: ''
+  }, body);
+  try {
+    const r = await fetch('/api/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+    if (r.status === 200) return { state: 'ok' };
+    if (r.status === 400) { const j = await r.json().catch(() => ({})); return { state: 'bad', problems: j.problems || [] }; }
+    return { state: 'offline' };
+  } catch (e) { return { state: 'offline' }; }
+}
+
+function smsFor(parts) {
+  return F('smsHref') + '?&body=' + encodeURIComponent(parts.filter(Boolean).join(' '));
+}
+function showOffline(box, textEl, smsEl, callEl, parts) {
+  textEl.textContent = F('offline');
+  smsEl.textContent = F('offlineLink');
+  smsEl.href = smsFor(parts);
+  callEl.textContent = F('offlineCall');
+  callEl.href = get(CONTENT, 'contact.phoneHref') || 'tel:+16023834678';
+  box.hidden = false;
+}
+
+function wireRequest() {
+  const form = $id('enq'), err = $id('formErr');
+  const read = () => ({
+    kind: 'request',
+    name: clean($id('f-name').value), phone: clean($id('f-phone').value), email: clean($id('f-email').value).toLowerCase(),
+    channel: checkedVal('channel'), interest: checkedVal('interest'), item: clean($id('f-item').value),
+    dates: clean($id('f-dates').value), city: checkedVal('city'), message: clean($id('f-msg').value),
+    consent: $id('f-consent').checked && !$id('f-consentRow').hidden
+  });
+  form.addEventListener('change', e => {
+    if (e.target.name === 'channel') syncConsent();
+    if (!err.hidden && STEP === 3) { const p = check(read(), { email: 'f-email', phone: 'f-phone', consent: 'f-consent' }); if (p.length) showProblems(err, form, p); else { err.hidden = true; form.querySelectorAll('[aria-invalid]').forEach(x => x.removeAttribute('aria-invalid')); } }
+  });
+  $id('btnNext').addEventListener('click', () => goStep(Math.min(3, STEP + 1), true));
+  $id('btnBack').addEventListener('click', () => goStep(Math.max(1, STEP - 1), true));
+  form.addEventListener('submit', async e => {
     e.preventDefault();
-    const data = Object.fromEntries(new FormData(form).entries());
-    data.consent = document.getElementById('f-consent').checked;
-    if (!data.name || !data.email || !data.phone) {
-      msg.hidden = false;
-      msg.textContent = 'Name, email and phone are needed before this can go anywhere.';
-      return;
+    if (STEP < 3) { goStep(STEP + 1, true); return; }
+    const l = read();
+    const probs = check(l, { email: 'f-email', phone: 'f-phone', consent: 'f-consent' });
+    $id('offline').hidden = true;
+    if (probs.length) { showProblems(err, form, probs); return; }
+    err.hidden = true;
+    const btn = $id('btnSend'), label = btn.textContent;
+    btn.disabled = true; btn.textContent = F('sending') + '…';
+    const res = await postLead(Object.assign({}, l, { source: REQ_SOURCE, company: form.querySelector('[name=company]').value }));
+    btn.disabled = false; btn.textContent = label;
+    if (res.state === 'ok') {
+      form.querySelectorAll('.step,.step-nav,.progress,.err,.offline').forEach(x => { x.hidden = true; });
+      const ok = document.createElement('p');
+      ok.className = 'ok'; ok.setAttribute('role', 'status'); ok.tabIndex = -1;
+      ok.textContent = F('success');
+      form.insertBefore(ok, form.firstChild); ok.focus();
+    } else if (res.state === 'bad') {
+      err.textContent = `${F('problemsLead')}: ${res.problems.join('; ')}.`; err.hidden = false;
+    } else {
+      const chLabel = (F('channels') || [])[CH_VALUES.indexOf(l.channel)] || '';
+      showOffline($id('offline'), $id('offlineText'), $id('offlineSms'), $id('offlineCall'), [
+        F('smsIntro') + ':',
+        l.interest + (l.item ? ` (${l.item})` : '') + '.',
+        l.dates && `${F('datesLabel')}: ${l.dates}.`, l.city && `${F('cityLabel')}: ${l.city}.`,
+        `${F('nameLabel')}: ${l.name}.`, l.phone && `${F('phoneLabel')}: ${l.phone}.`, l.email && `${F('emailLabel')}: ${l.email}.`,
+        chLabel && `${F('channelLabel')}: ${chLabel}.`, l.message
+      ]);
     }
-    btn.disabled = true;
-    const original = btn.textContent;
-    btn.textContent = 'Sending…';
-    try {
-      const r = await fetch('/api/submit', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data)
-      });
-      msg.hidden = false;
-      if (r.ok) { msg.textContent = get(CONTENT, 'enquire.success'); form.reset(); }
-      else { msg.textContent = get(CONTENT, 'enquire.failure'); }
-    } catch (err) {
-      msg.hidden = false;
-      msg.textContent = get(CONTENT, 'enquire.failure');
-    } finally { btn.disabled = false; btn.textContent = original; }
+  });
+}
+
+/* one-field capture (email or phone, detected): fleet menu and ecosystem list */
+function wireCapture(form, p) {
+  const input = $id(p.input), err = $id(p.err), msg = $id(p.msg), row = form.querySelector('.cap-row');
+  const consentRow = p.consentRow && $id(p.consentRow), consent = p.consent && $id(p.consent);
+  const isPhone = v => v && !v.includes('@') && /\d/.test(v);
+  if (consentRow) input.addEventListener('input', () => { consentRow.hidden = !isPhone(input.value); });
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const v = clean(input.value), phone = !v.includes('@');
+    const l = { kind: p.kind, email: phone ? '' : v.toLowerCase(), phone: phone ? v : '' };
+    l.channel = phone ? (p.kind === 'list' ? 'text' : 'call') : 'email';
+    l.consent = !!(consent && !consentRow.hidden && consent.checked);
+    const probs = check(l, { email: p.input, phone: p.input, consent: p.consent || p.input });
+    msg.textContent = '';
+    if (probs.length) { showProblems(err, form, probs); return; }
+    err.hidden = true; input.removeAttribute('aria-invalid');
+    const btn = form.querySelector('button[type=submit]'), label = btn.textContent;
+    btn.disabled = true; btn.textContent = F('sending') + '…';
+    const res = await postLead({ kind: p.kind, email: l.email, phone: l.phone, channel: l.channel, consent: l.consent, source: p.source, company: form.querySelector('[name=company]').value });
+    btn.disabled = false; btn.textContent = label;
+    if (res.state === 'ok') {
+      row.hidden = true; if (consentRow) consentRow.hidden = true;
+      msg.textContent = '';
+      if (p.kind === 'menu') {
+        const a = document.createElement('a');
+        a.className = 'ul'; a.href = F('menuHref'); a.textContent = F('menuLink'); a.setAttribute('download', '');
+        msg.appendChild(a);
+      }
+      const s = document.createElement('span');
+      s.textContent = F(p.kind === 'menu' ? 'menuSaved' : 'listSaved');
+      msg.appendChild(s);
+    } else if (res.state === 'bad') {
+      err.textContent = `${F('problemsLead')}: ${res.problems.join('; ')}.`; err.hidden = false;
+    } else {
+      msg.textContent = '';
+      const box = document.createElement('div'); box.className = 'offline';
+      const t = document.createElement('span'), s = document.createElement('a'), c = document.createElement('a');
+      s.className = c.className = 'ul';
+      box.append(t, s, c); msg.appendChild(box);
+      showOffline(box, t, s, c, [F(p.kind === 'menu' ? 'smsMenu' : 'smsList'), v]);
+    }
+  });
+}
+
+/* mobile sticky bar: after the hero, never over a capture form or the footer */
+function wireSticky() {
+  const bar = $id('sticky');
+  if (!bar || !('IntersectionObserver' in window)) return;
+  const st = { hero: true, heroAbove: false, block: new Set() };
+  const upd = () => { bar.classList.toggle('show', !st.hero && st.heroAbove && st.block.size === 0); };
+  new IntersectionObserver(es => es.forEach(en => { st.hero = en.isIntersecting; st.heroAbove = en.boundingClientRect.bottom < 0; upd(); })).observe($id('hero'));
+  const watch = (el) => new IntersectionObserver(es => es.forEach(en => { en.isIntersecting ? st.block.add(el) : st.block.delete(el); upd(); })).observe(el);
+  ['enq', 'menuForm', 'listForm'].forEach(id => watch($id(id)));
+  watch(document.querySelector('footer.foot'));
+}
+
+let FUNNEL_WIRED = false;
+function wireFunnel() {
+  if (FUNNEL_WIRED) return; FUNNEL_WIRED = true;
+  wireRequest();
+  wireCapture($id('menuForm'), { kind: 'menu', input: 'm-contact', err: 'm-err', msg: 'm-msg', source: 'menu' });
+  wireCapture($id('listForm'), { kind: 'list', input: 'l-contact', err: 'l-err', msg: 'l-msg', source: 'ecosystem', consentRow: 'l-consentRow', consent: 'l-consent' });
+  wireSticky();
+  /* every route into the request card: lots, service CTAs, "Ask about this", hero, header, sticky bar */
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a[href="#enquire"]');
+    if (!a) return;
+    e.preventDefault();
+    const sec = a.closest('section[id],header,#sticky');
+    const source = sec ? (sec.id || (sec.tagName === 'HEADER' ? 'header' : 'enquire')) : 'enquire';
+    if (a.dataset.lot) return openRequest({ chip: F('lotChip'), item: a.dataset.lot, step: 2, source });
+    if (a.dataset.ask) return openRequest({ chip: a.dataset.chip, item: a.dataset.ask, step: 2, source });
+    if (a.id === 'ecoCta') return openRequest({ chip: get(CONTENT, 'ecosystem.chip'), step: 2, source });
+    if (a.dataset.chip) return openRequest({ chip: a.dataset.chip, step: 2, source });
+    openRequest({ step: 1, source });
   });
 }
 
@@ -597,7 +920,7 @@ function wireForm() {
     const r = await fetch('content.json', { cache: 'no-store' });
     if (r.ok) CONTENT = await r.json();
   } catch (e) { /* degrade to DEFAULT_CONTENT */ }
-  const start = () => { renderContent(CONTENT); wireForm(); };
+  const start = () => { renderContent(CONTENT); wireFunnel(); };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once: true });
   else start();
 })();

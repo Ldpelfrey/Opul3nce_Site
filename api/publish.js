@@ -204,8 +204,37 @@ function validate(c) {
       && c.footer.legal.length !== c.footer.legalHref.length) {
     problems.push('Each legal link needs a matching href — a mismatch ships a dead link.');
   }
-  if (Array.isArray(c.enquire?.interests) && c.enquire.interests.length === 0) {
-    problems.push('The enquiry form needs at least one interest option.');
+  // ── funnel: the request card, the menu offer and the ecosystem list ──────
+  if (c.funnel !== undefined) {
+    const f = c.funnel;
+    if (!f || typeof f !== 'object' || Array.isArray(f)) problems.push('funnel must be an object.');
+    else {
+      const LISTS = ['chips', 'cities', 'channels'];
+      Object.keys(f).forEach(k => {
+        if (LISTS.includes(k)) return;
+        if (typeof f[k] !== 'string' || !f[k].trim()) problems.push(`funnel.${k} is required text.`);
+      });
+      LISTS.forEach(k => {
+        if (!Array.isArray(f[k]) || f[k].length === 0 || f[k].some(v => typeof v !== 'string' || !v.trim())) {
+          problems.push(`funnel.${k} needs at least one option.`);
+        }
+      });
+      if (Array.isArray(f.channels) && f.channels.length !== 4) {
+        problems.push('funnel.channels needs exactly 4 lines: Text, Call, WhatsApp, Email, in that order.');
+      }
+      if (f.menuHref && !MEDIA_RE.test(f.menuHref)) problems.push('funnel.menuHref must be an https:// URL or an assets/ path.');
+      if (f.smsHref && !/^sms:\+?\d+$/.test(f.smsHref)) problems.push('funnel.smsHref must look like sms:+16023834678.');
+      // every chip a lot, group, item or the ecosystem preselects must exist, or the preselect silently does nothing
+      const chips = Array.isArray(f.chips) ? f.chips : [];
+      const want = [['funnel.lotChip', f.lotChip], ['ecosystem.chip', c.ecosystem?.chip]];
+      (Array.isArray(c.services?.groups) ? c.services.groups : []).forEach((g, gi) => {
+        want.push([`services.groups[${gi + 1}].chip`, g.chip]);
+        (g.items || []).forEach((it, i) => { if (it.chip) want.push([`services.groups[${gi + 1}].items[${i + 1}].chip`, it.chip]); });
+      });
+      want.forEach(([where, v]) => {
+        if (v && chips.length && !chips.includes(v)) problems.push(`${where}: "${v}" is not in the What chips.`);
+      });
+    }
   }
 
   // ── theme ───────────────────────────────────────────────────────────────

@@ -30,7 +30,8 @@ button{
   font-size:.9rem;letter-spacing:.02em;padding:.7rem 1.2rem;
   border-radius:3px;cursor:pointer;
 }
-button.ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
+button.ghost,a.ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
+a.ghost{font-family:var(--f);font-weight:500;font-size:.9rem;letter-spacing:.02em;padding:.7rem 1.2rem;border-radius:3px}
 button:disabled{opacity:.5;cursor:not-allowed}
 .shell{display:none;grid-template-columns:minmax(0,460px) minmax(0,1fr);height:100vh}
 .shell.on{display:grid}
@@ -80,6 +81,7 @@ label.f{display:grid;gap:.3rem;font-size:.8rem;color:var(--muted);letter-spacing
       <button id="publishBtn">Publish</button>
       <button class="ghost" id="downloadBtn">Download a copy</button>
       <button class="ghost" id="reloadBtn">Discard changes</button>
+      <a class="ghost" href="leads.html" style="text-decoration:none;display:inline-block">Leads</a>
     </div>
     <p class="msg" id="msg" hidden></p>
     <div id="form"></div>
@@ -140,11 +142,12 @@ const SECTIONS = [
     { p:'services.heading', l:'Heading' }, { p:'services.standfirst', l:'Standfirst', t:'textarea' },
   ], list:'services.groups', itemLabel:'Group',
     itemFields:[{k:'id',l:'Anchor id (no spaces)'},{k:'label',l:'Index label'},{k:'title',l:'Title'},{k:'standfirst',l:'Standfirst',t:'textarea'},
-      {k:'cta',l:'CTA line'},{k:'ctaNote',l:'CTA note'},{k:'ctaHref',l:'CTA link'}] },
+      {k:'cta',l:'CTA line'},{k:'ctaNote',l:'CTA note'},{k:'ctaHref',l:'CTA link'},{k:'chip',l:'Request chip this group preselects (must be one of the What chips)'}] },
   { title: 'Services: items', fields:[], listsOf:'services.groups' },
   { title: 'Ecosystem', fields:[
     { p:'ecosystem.label', l:'Index label' }, { p:'ecosystem.heading', l:'Heading' }, { p:'ecosystem.standfirst', l:'Standfirst', t:'textarea' },
     { p:'ecosystem.cta', l:'CTA line' }, { p:'ecosystem.ctaNote', l:'CTA note' }, { p:'ecosystem.ctaHref', l:'CTA link' },
+    { p:'ecosystem.chip', l:'Request chip this section preselects (must be one of the What chips)' },
   ], list:'ecosystem.items', itemLabel:'Item',
     itemFields:[{k:'name',l:'Name'},{k:'body',l:'Body',t:'textarea'},{k:'icon',l:'Icon image (assets/… or https://)'}] },
   { title: 'Reviews', fields:[
@@ -157,14 +160,67 @@ const SECTIONS = [
     { p:'desk.heading', l:'Heading' }, { p:'desk.standfirst', l:'Standfirst' },
   ], list:'desk.people', itemLabel:'Person',
     itemFields:[{k:'name',l:'Name'},{k:'role',l:'Role'},{k:'body',l:'Bio',t:'textarea'}] },
-  { title: 'Enquiry form', fields:[
+  { title: 'Request card', fields:[
     { p:'enquire.heading', l:'Heading' },
     { p:'enquire.standfirst', l:'Standfirst', t:'textarea' },
-    { p:'enquire.interests', l:'Interest options (one per line)', t:'lines' },
-    { p:'enquire.consent', l:'Consent line' },
-    { p:'enquire.submit', l:'Submit button' },
-    { p:'enquire.success', l:'Success message' },
-    { p:'enquire.failure', l:'Failure message', t:'textarea' },
+  ]},
+  { title: 'Funnel: request, menu, list', fields: [
+    { p:'funnel.step1Title', l:"Step 1 heading" },
+    { p:'funnel.step1Hint', l:"Step 1 hint" },
+    { p:'funnel.chips', l:"What chips (one per line; service and lot chips must match one of these)", t:'lines' },
+    { p:'funnel.itemLabel', l:"Vehicle or service field label" },
+    { p:'funnel.step2Title', l:"Step 2 heading" },
+    { p:'funnel.datesLabel', l:"Dates label" },
+    { p:'funnel.datesPlaceholder', l:"Dates placeholder" },
+    { p:'funnel.cityLabel', l:"City label" },
+    { p:'funnel.cities', l:"Cities (one per line)", t:'lines' },
+    { p:'funnel.detailsLabel', l:"Details label" },
+    { p:'funnel.step3Title', l:"Step 3 heading" },
+    { p:'funnel.nameLabel', l:"Name label" },
+    { p:'funnel.phoneLabel', l:"Phone label" },
+    { p:'funnel.emailLabel', l:"Email label" },
+    { p:'funnel.contactHint', l:"Phone or email hint" },
+    { p:'funnel.channelLabel', l:"Preferred method label" },
+    { p:'funnel.channels', l:"Methods, in this order: Text, Call, WhatsApp, Email (one per line, exactly 4)", t:'lines' },
+    { p:'funnel.consent', l:"SMS consent line (request)" },
+    { p:'funnel.back', l:"Back button" },
+    { p:'funnel.next', l:"Continue button" },
+    { p:'funnel.submit', l:"Send button" },
+    { p:'funnel.sending', l:"Sending label" },
+    { p:'funnel.success', l:"Request success message" },
+    { p:'funnel.offline', l:"Offline message" },
+    { p:'funnel.offlineLink', l:"Offline text-instead link" },
+    { p:'funnel.offlineCall', l:"Offline call link text" },
+    { p:'funnel.smsHref', l:"Text-us link (sms:+1\u2026)" },
+    { p:'funnel.smsIntro', l:"Prefilled text: opening words" },
+    { p:'funnel.smsMenu', l:"Prefilled text: menu request" },
+    { p:'funnel.smsList', l:"Prefilled text: list request" },
+    { p:'funnel.problemsLead', l:"Problems lead-in" },
+    { p:'funnel.menuHeading', l:"Fleet menu band heading" },
+    { p:'funnel.menuStandfirst', l:"Fleet menu band text" },
+    { p:'funnel.menuLabel', l:"Fleet menu field label" },
+    { p:'funnel.menuSubmit', l:"Fleet menu button" },
+    { p:'funnel.menuHref', l:"Fleet menu PDF (assets/\u2026)" },
+    { p:'funnel.menuLink', l:"Fleet menu download link text" },
+    { p:'funnel.menuSaved', l:"Fleet menu saved message" },
+    { p:'funnel.listHeading', l:"Ecosystem list heading" },
+    { p:'funnel.listLabel', l:"Ecosystem list field label" },
+    { p:'funnel.listSubmit', l:"Ecosystem list button" },
+    { p:'funnel.listConsent', l:"Ecosystem list SMS consent" },
+    { p:'funnel.listSaved', l:"Ecosystem list saved message" },
+    { p:'funnel.stickyPrimary', l:"Mobile bar: primary button" },
+    { p:'funnel.stickyText', l:"Mobile bar: text button" },
+    { p:'funnel.askLink', l:"'Ask about this' link" },
+    { p:'funnel.stepWord', l:"Screen-reader word for 'Step'" },
+    { p:'funnel.lotChip', l:"Chip a vehicle's Enquire button preselects" },
+    { p:'funnel.pName', l:"Problem: name" },
+    { p:'funnel.pContact', l:"Problem: no phone or email" },
+    { p:'funnel.pEmail', l:"Problem: bad email" },
+    { p:'funnel.pPhone', l:"Problem: bad phone" },
+    { p:'funnel.pChannel', l:"Problem: no method chosen" },
+    { p:'funnel.pChannelPhone', l:"Problem: method needs a phone" },
+    { p:'funnel.pChannelEmail', l:"Problem: method needs an email" },
+    { p:'funnel.pConsent', l:"Problem: no consent" },
   ]},
   { title: 'Contact & footer', fields:[
     { p:'contact.email', l:'Email' },
@@ -247,7 +303,7 @@ function build(){
       (get(CONTENT,sec.listsOf)||[]).forEach((g,gi)=>{
         (g.items||[]).forEach((item,i)=>{
           inner += `<div class="item"><h4>${esc(g.label||g.title||'Group')} item ${i+1}</h4>`;
-          [{k:'name',l:'Name'},{k:'body',l:'Body',t:'textarea'},{k:'icon',l:'Icon image (assets/… or https://)'}].forEach(f=>{
+          [{k:'name',l:'Name'},{k:'body',l:'Body',t:'textarea'},{k:'icon',l:'Icon image (assets/… or https://)'},{k:'chip',l:'Request chip (blank = the group\'s chip)'}].forEach(f=>{
             const p=`${sec.listsOf}.${gi}.items.${i}.${f.k}`; const v=item[f.k];
             inner += `<label class="f">${esc(f.l)}` +
               (f.t==='textarea'

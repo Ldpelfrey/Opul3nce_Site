@@ -213,44 +213,53 @@
           {
             "name": "Luxury & exotic car rentals",
             "body": "Premium vehicles, with delivery and pickup around your plans.",
-            "icon": "assets/services/luxury-exotic-car-rentals.webp"
+            "icon": "assets/services/luxury-exotic-car-rentals.webp",
+            "chip": "Exotic car"
           },
           {
             "name": "Private aviation",
             "body": "Jet charters, aircraft sourcing and sales, with travel coordination.",
-            "icon": "assets/services/private-aviation.webp"
+            "icon": "assets/services/private-aviation.webp",
+            "chip": "Private aviation"
           },
           {
             "name": "Luxury stays & real estate",
             "body": "Luxury stays, property sourcing and real estate introductions.",
-            "icon": "assets/services/luxury-stays-real-estate.webp"
+            "icon": "assets/services/luxury-stays-real-estate.webp",
+            "chip": "Stays & yachts"
           },
           {
             "name": "Boats & yachts",
             "body": "Private charters and experiences, with itinerary and hospitality coordination.",
-            "icon": "assets/services/boats-yachts.webp"
+            "icon": "assets/services/boats-yachts.webp",
+            "chip": "Stays & yachts"
           },
           {
             "name": "Executive transportation",
             "body": "Black cars, SUVs, Sprinters and buses for transfers, groups and events.",
-            "icon": "assets/services/executive-transportation.webp"
+            "icon": "assets/services/executive-transportation.webp",
+            "chip": "Executive transport"
           },
           {
             "name": "Private dining & nightlife",
             "body": "Private chefs, catering, dining reservations and Scottsdale nightlife access.",
-            "icon": "assets/services/private-dining-nightlife.webp"
+            "icon": "assets/services/private-dining-nightlife.webp",
+            "chip": "Events & dining"
           },
           {
             "name": "Security & discretion",
             "body": "Private and armed security coordination for travel, drivers and events.",
-            "icon": "assets/services/security-discretion.webp"
+            "icon": "assets/services/security-discretion.webp",
+            "chip": "Security"
           },
           {
             "name": "Events & experiences",
             "body": "Venues, vendors and talent for private events and tailored experiences.",
-            "icon": "assets/services/events-experiences.webp"
+            "icon": "assets/services/events-experiences.webp",
+            "chip": "Events & dining"
           }
-        ]
+        ],
+        "chip": "Exotic car"
       },
       {
         "id": "auto",
@@ -281,7 +290,8 @@
             "body": "Detailing, reconditioning, maintenance and specialist service coordination.",
             "icon": "assets/services/detail-maintain.webp"
           }
-        ]
+        ],
+        "chip": "Auto services"
       },
       {
         "id": "business",
@@ -332,7 +342,8 @@
             "body": "Credit-building resources and financing introductions, subject to provider eligibility and terms.",
             "icon": "assets/services/business-credit-funding.webp"
           }
-        ]
+        ],
+        "chip": "Business services"
       }
     ]
   },
@@ -364,7 +375,8 @@
         "body": "Brand partnerships, shared experiences and curated introductions.",
         "icon": "assets/services/brand-collaborations.webp"
       }
-    ]
+    ],
+    "chip": "Ecosystem"
   },
   "proof": {
     "heading": "What renters actually said",
@@ -425,21 +437,8 @@
     ]
   },
   "enquire": {
-    "heading": "Make an enquiry",
-    "standfirst": "Tell us the dates and the vehicle, or the service. You get a rate and a confirmation, not a callback queue.",
-    "interests": [
-      "Exotic car rental",
-      "Executive transportation",
-      "Private aviation",
-      "Stays & yachts",
-      "Business services",
-      "Auto services",
-      "Ecosystem & memberships"
-    ],
-    "consent": "I consent to receive SMS and email about this enquiry.",
-    "submit": "Send enquiry",
-    "success": "Received. You will hear back from the desk today.",
-    "failure": "That did not send. Call +1 (602) 383-4678 or email info@opul3nce.io and we will pick it up."
+    "heading": "Request availability",
+    "standfirst": "Tell the desk what you need, then how to reach you. Contact details come last."
   },
   "contact": {
     "email": "info@opul3nce.io",
@@ -463,5 +462,83 @@
       "https://opul3nce.io/privacy-policy"
     ],
     "_legalHrefNote": "Absolute URLs to the client's real legal pages, because this pitch deploy has no /terms-of-service or /privacy-policy of its own — relative paths 404'd here. Switch back to relative paths if this becomes the production site."
+  },
+  "funnel": {
+    "step1Title": "What can we arrange?",
+    "step1Hint": "Choose one. You can add detail on the next step.",
+    "chips": [
+      "Exotic car",
+      "Executive transport",
+      "Private aviation",
+      "Stays & yachts",
+      "Security",
+      "Events & dining",
+      "Auto services",
+      "Business services",
+      "Ecosystem"
+    ],
+    "itemLabel": "Vehicle or service",
+    "step2Title": "When and where?",
+    "datesLabel": "Dates",
+    "datesPlaceholder": "e.g. 14-17 Oct",
+    "cityLabel": "City",
+    "cities": [
+      "Scottsdale",
+      "Miami",
+      "Los Angeles",
+      "Elsewhere"
+    ],
+    "detailsLabel": "Details (optional): delivery address, anything else",
+    "step3Title": "How should we reach you?",
+    "nameLabel": "Name",
+    "phoneLabel": "Phone",
+    "emailLabel": "Email",
+    "contactHint": "Phone, email or both.",
+    "channelLabel": "Preferred method",
+    "channels": [
+      "Text",
+      "Call",
+      "WhatsApp",
+      "Email"
+    ],
+    "consent": "I agree to receive texts about this request. Reply STOP to opt out.",
+    "back": "Back",
+    "next": "Continue",
+    "submit": "Send request",
+    "sending": "Sending",
+    "success": "Received. The desk will reply by your chosen method.",
+    "offline": "Our form is offline.",
+    "offlineLink": "Send this as a text instead.",
+    "offlineCall": "or call (602) 383-4678",
+    "smsHref": "sms:+16023834678",
+    "smsIntro": "Opul3nce request",
+    "smsMenu": "Please send me the Opul3nce fleet menu.",
+    "smsList": "Please add me to the Opul3nce events and memberships list.",
+    "problemsLead": "Please check",
+    "menuHeading": "Get the full fleet menu, every vehicle on one page",
+    "menuStandfirst": "Add an email or phone number and the menu is yours to download.",
+    "menuLabel": "Email or phone",
+    "menuSubmit": "Get the menu",
+    "menuHref": "assets/opul3nce-fleet-menu.pdf",
+    "menuLink": "Download the fleet menu (PDF)",
+    "menuSaved": "Saved. We will only use this to send you the menu and availability.",
+    "listHeading": "Hear about events and memberships first",
+    "listLabel": "Email or phone",
+    "listSubmit": "Add me",
+    "listConsent": "I agree to receive texts about events and memberships. Reply STOP to opt out.",
+    "listSaved": "Saved. We will only use this to tell you about events and memberships.",
+    "stickyPrimary": "Request availability",
+    "stickyText": "Text us",
+    "askLink": "Ask about this",
+    "stepWord": "Step",
+    "lotChip": "Exotic car",
+    "pName": "name",
+    "pContact": "a phone number or email",
+    "pEmail": "a valid email",
+    "pPhone": "a valid phone number",
+    "pChannel": "how we should reach you",
+    "pChannelPhone": "a phone number for that contact method",
+    "pChannelEmail": "an email for that contact method",
+    "pConsent": "consent to be texted"
   }
 }
