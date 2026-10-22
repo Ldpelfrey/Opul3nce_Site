@@ -4,20 +4,20 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Opul3nce — content editor</title>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500&display=swap" rel="stylesheet">
 <script src="../theme.js"></script>
 <style>
 :root{
-  --bg:#14140F; --panel:#1C1C17; --line:rgba(237,233,226,.14);
-  --text:#EDE9E2; --muted:#9C978D; --leaf:#C9A227; --bad:#E4645A; --ok:#7FB77E;
-  --f:"Instrument Sans",ui-sans-serif,system-ui,sans-serif;
+  --bg:#151412; --panel:#1D1C19; --line:rgba(237,233,226,.14);
+  --text:#ECE7DD; --muted:#B7AD9C; --leaf:#A8936A; --bad:#E4645A; --ok:#7FB77E;
+  --f:"Jost",ui-sans-serif,system-ui,sans-serif;
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--text);font-family:var(--f);font-size:15px;line-height:1.55}
 a{color:var(--leaf)}
 .gate{min-height:100vh;display:grid;place-items:center;padding:2rem}
 .gate form{width:min(360px,100%);display:grid;gap:1rem}
-h1{font-size:1.6rem;margin:0 0 .4rem;letter-spacing:-.01em;font-weight:600}
+h1{font-size:1.6rem;margin:0 0 .4rem;letter-spacing:-.01em;font-weight:500}
 .sub{color:var(--muted);font-size:.9rem}
 input,select,textarea{
   width:100%;background:#0E0E0A;border:1px solid var(--line);color:var(--text);
@@ -26,8 +26,8 @@ input,select,textarea{
 textarea{resize:vertical;min-height:74px}
 input:focus,select:focus,textarea:focus{outline:none;border-color:var(--leaf)}
 button{
-  background:var(--leaf);color:#14140F;border:0;font-family:var(--f);font-weight:700;
-  font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;padding:.7rem 1.2rem;
+  background:var(--leaf);color:#151412;border:0;font-family:var(--f);font-weight:500;
+  font-size:.9rem;letter-spacing:.02em;padding:.7rem 1.2rem;
   border-radius:3px;cursor:pointer;
 }
 button.ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
@@ -38,14 +38,14 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .pane{overflow-y:auto;padding:1.25rem;border-right:1px solid var(--line)}
 .bar{position:sticky;top:0;background:var(--bg);z-index:5;padding-bottom:.9rem;margin-bottom:.9rem;border-bottom:1px solid var(--line);display:flex;gap:.6rem;flex-wrap:wrap;align-items:center}
 details{border:1px solid var(--line);border-radius:4px;margin-bottom:.7rem;background:var(--panel)}
-summary{cursor:pointer;padding:.75rem .85rem;font-weight:600;font-size:1.15rem;letter-spacing:-.005em;list-style:none}
+summary{cursor:pointer;padding:.75rem .85rem;font-weight:500;font-size:1.15rem;letter-spacing:-.005em;list-style:none}
 summary::-webkit-details-marker{display:none}
 summary::before{content:"▸ ";color:var(--leaf)}
 details[open] summary::before{content:"▾ "}
 .body{padding:.3rem .85rem 1rem;display:grid;gap:.8rem}
-label.f{display:grid;gap:.3rem;font-size:.75rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+label.f{display:grid;gap:.3rem;font-size:.8rem;color:var(--muted);letter-spacing:.02em}
 .item{border:1px solid var(--line);border-radius:3px;padding:.7rem;display:grid;gap:.6rem;background:#181813}
-.item h4{margin:0;font-size:.75rem;color:var(--leaf);letter-spacing:.12em;text-transform:uppercase}
+.item h4{margin:0;font-size:.8rem;color:var(--leaf);letter-spacing:.04em}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
 .msg{padding:.6rem .8rem;border-radius:3px;font-size:.85rem;background:var(--panel);border:1px solid var(--line);margin-bottom:.8rem;display:flex;gap:.55rem;align-items:baseline}
 .msg::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--leaf);flex:0 0 auto;transform:translateY(-1px)}
@@ -103,6 +103,7 @@ const SECTIONS = [
     { p:'brand.name', l:'Wordmark' },
     { p:'brand.monogram', l:'Monogram (alt text)' },
     { p:'brand.monogramImg', l:'Monogram image (assets/… or https://)' },
+    { p:'brand.lockupImg', l:'Lockup image, used on ink (assets/… or https://)' },
     { p:'brand.tagline', l:'Tagline' },
   ]},
   { title: 'Hero', fields: [
@@ -113,6 +114,9 @@ const SECTIONS = [
     { p:'hero.ctaPrimaryHref', l:'Primary button link' },
     { p:'hero.ctaSecondary', l:'Secondary button' },
     { p:'hero.ctaSecondaryHref', l:'Secondary button link' },
+    { p:'hero.image', l:'Hero photo (assets/… or https://)' },
+    { p:'hero.imageAlt', l:'Hero photo alt text', t:'textarea' },
+    { p:'hero.imageCaption', l:'Hero photo caption' },
     { p:'hero.plateNote', l:'Internal note (never rendered)', t:'textarea' },
   ]},
   { title: 'Position bar', list:'position.items', itemLabel:'Figure',
@@ -132,10 +136,17 @@ const SECTIONS = [
       {k:'seats',l:'Seats'},{k:'drive',l:'Drivetrain'},
       {k:'rate',l:'Rate — blank shows the fallback'},{k:'note',l:'One-line note',t:'textarea'}
     ] },
-  { title: 'Beyond the fleet', fields:[
-    { p:'beyond.heading', l:'Heading' }, { p:'beyond.standfirst', l:'Standfirst' },
-  ], list:'beyond.items', itemLabel:'Item',
-    itemFields:[{k:'title',l:'Title'},{k:'count',l:'Count'},{k:'body',l:'Body',t:'textarea'}] },
+  { title: 'Services', fields:[
+    { p:'services.heading', l:'Heading' }, { p:'services.standfirst', l:'Standfirst', t:'textarea' },
+  ], list:'services.groups', itemLabel:'Group',
+    itemFields:[{k:'id',l:'Anchor id (no spaces)'},{k:'label',l:'Index label'},{k:'title',l:'Title'},{k:'standfirst',l:'Standfirst',t:'textarea'},
+      {k:'cta',l:'CTA line'},{k:'ctaNote',l:'CTA note'},{k:'ctaHref',l:'CTA link'}] },
+  { title: 'Services: items', fields:[], listsOf:'services.groups' },
+  { title: 'Ecosystem', fields:[
+    { p:'ecosystem.label', l:'Index label' }, { p:'ecosystem.heading', l:'Heading' }, { p:'ecosystem.standfirst', l:'Standfirst', t:'textarea' },
+    { p:'ecosystem.cta', l:'CTA line' }, { p:'ecosystem.ctaNote', l:'CTA note' }, { p:'ecosystem.ctaHref', l:'CTA link' },
+  ], list:'ecosystem.items', itemLabel:'Item',
+    itemFields:[{k:'name',l:'Name'},{k:'body',l:'Body',t:'textarea'},{k:'icon',l:'Icon image (assets/… or https://)'}] },
   { title: 'Reviews', fields:[
     { p:'proof.heading', l:'Heading' }, { p:'proof.standfirst', l:'Standfirst' },
     { p:'proof.attribution', l:'Attribution line under every quote' },
@@ -146,11 +157,6 @@ const SECTIONS = [
     { p:'desk.heading', l:'Heading' }, { p:'desk.standfirst', l:'Standfirst' },
   ], list:'desk.people', itemLabel:'Person',
     itemFields:[{k:'name',l:'Name'},{k:'role',l:'Role'},{k:'body',l:'Bio',t:'textarea'}] },
-  { title: 'Business development', fields:[
-    { p:'business.heading', l:'Heading' }, { p:'business.standfirst', l:'Standfirst', t:'textarea' },
-    { p:'business.cta', l:'CTA label' }, { p:'business.ctaHref', l:'CTA link' },
-  ], list:'business.services', itemLabel:'Service',
-    itemFields:[{k:'title',l:'Title'},{k:'body',l:'Body',t:'textarea'}] },
   { title: 'Enquiry form', fields:[
     { p:'enquire.heading', l:'Heading' },
     { p:'enquire.standfirst', l:'Standfirst', t:'textarea' },
@@ -237,6 +243,21 @@ function build(){
         inner += `</div>`;
       });
     }
+    if(sec.listsOf){
+      (get(CONTENT,sec.listsOf)||[]).forEach((g,gi)=>{
+        (g.items||[]).forEach((item,i)=>{
+          inner += `<div class="item"><h4>${esc(g.label||g.title||'Group')} item ${i+1}</h4>`;
+          [{k:'name',l:'Name'},{k:'body',l:'Body',t:'textarea'},{k:'icon',l:'Icon image (assets/… or https://)'}].forEach(f=>{
+            const p=`${sec.listsOf}.${gi}.items.${i}.${f.k}`; const v=item[f.k];
+            inner += `<label class="f">${esc(f.l)}` +
+              (f.t==='textarea'
+                ? `<textarea id="${idOf(p)}" data-p="${esc(p)}">${esc(v==null?'':v)}</textarea>`
+                : `<input id="${idOf(p)}" data-p="${esc(p)}" value="${esc(v==null?'':v)}">`) + `</label>`;
+          });
+          inner += `</div>`;
+        });
+      });
+    }
     if(sec.theme) inner += themeUI();
     d.innerHTML = `<summary>${esc(sec.title)}</summary><div class="body">${inner}</div>`;
     wrap.appendChild(d);
@@ -265,11 +286,11 @@ function themeUI(){
   const sw=k=>`<div class="sw"><input type="color" data-theme="${k}" value="${p[k]}"><span class="contrast" id="c_${k}">—</span></div>`;
   return `<label class="f">Display face<select id="themeFont">${fonts}</select></label>
     <label class="f">Bone (page ground)${sw('bone')}</label>
-    <label class="f">Bone 2 (alt band)${sw('bone2')}</label>
-    <label class="f">Ink (type & plates)${sw('ink')}</label>
-    <label class="f">Ink 2 (plate surface)${sw('ink2')}</label>
-    <label class="f">Gold on bone${sw('leaf')}</label>
-    <label class="f">Gold on ink${sw('leafLift')}</label>`;
+    <label class="f">Stone (decorative, never text)${sw('stone')}</label>
+    <label class="f">Deep stone (accent text on bone)${sw('deepStone')}</label>
+    <label class="f">Ink (type and the ecosystem section)${sw('ink')}</label>
+    <label class="f">Gold (hairlines and mark; text on ink only)${sw('gold')}</label>`;
+}</label>`;
 }
 
 /* Live WCAG readout in plain words — same maths the site uses, from theme.js. */
@@ -277,11 +298,10 @@ function paintContrast(){
   const T=window.OPUL_THEME; if(!T) return;
   const p=Object.assign({},T.DEFAULT_PALETTE,get(CONTENT,'theme.palette')||{});
   const pairs={ bone:[p.ink,p.bone,'body type on the page ground'],
-                bone2:[p.ink,p.bone2,'body type on the alt band'],
-                ink:[p.bone,p.ink,'page type on ink'],
-                ink2:[p.bone,p.ink2,'type on plate surface'],
-                leaf:[p.leaf,p.bone,'gold small text on bone'],
-                leafLift:[p.leafLift,p.ink,'gold small text on ink'] };
+                stone:[p.stone,p.ink,'decorative only, shown against ink'],
+                deepStone:[p.deepStone,p.bone,'accent text on bone'],
+                ink:[p.bone,p.ink,'type on the ink section'],
+                gold:[p.gold,p.ink,'gold text on ink (on bone it is hairlines only)'] };
   for(const [k,[fg,bg,what]] of Object.entries(pairs)){
     const el=document.getElementById('c_'+k); if(!el) continue;
     const r=T.ratio(fg,bg);

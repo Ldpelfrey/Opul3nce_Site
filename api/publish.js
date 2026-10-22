@@ -19,8 +19,8 @@ const MEDIA_RE = /^(https?:\/\/.+|\/?assets\/.+)$/i;
 const HEX_RE   = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i;
 // Must stay in step with FONTS in theme.js. A font id the site can't render would ship a
 // broken family, so an unknown id is rejected rather than silently falling back.
-const FONT_IDS = ['bodoni-moda','instrument-serif','cormorant','fraunces'];
-const THEME_COLORS = ['bone','bone2','ink','ink2','leaf','leafLift'];
+const FONT_IDS = ['jost'];
+const THEME_COLORS = ['bone','stone','deepStone','ink','gold'];
 
 const { requireAuth } = require('./_lib/auth');
 
@@ -165,10 +165,10 @@ function validate(c) {
   // ── repeating text blocks ───────────────────────────────────────────────
   const lists = [
     ['position.items',   c.position?.items,   ['figure', 'label']],
-    ['beyond.items',     c.beyond?.items,     ['title', 'body']],
+    ['services.groups',  c.services?.groups,  ['id', 'label', 'title']],
+    ['ecosystem.items',  c.ecosystem?.items,  ['name', 'body']],
     ['proof.quotes',     c.proof?.quotes,     ['quote', 'name']],
     ['desk.people',      c.desk?.people,      ['name', 'role']],
-    ['business.services',c.business?.services,['title', 'body']],
   ];
   for (const [label, arr, keys] of lists) {
     if (arr === undefined) continue;
@@ -179,6 +179,20 @@ function validate(c) {
       });
     });
   }
+
+  // Services: each group holds its own items; every roundel needs a name, body and a real image path.
+  (Array.isArray(c.services?.groups) ? c.services.groups : []).forEach((g, gi) => {
+    if (!Array.isArray(g.items)) { problems.push(`services.groups[${gi + 1}].items must be a list.`); return; }
+    g.items.forEach((it, i) => {
+      const n = `services.groups[${gi + 1}].items[${i + 1}]`;
+      if (!it?.name?.trim()) problems.push(`${n}: name is required.`);
+      if (!it?.body?.trim()) problems.push(`${n}: body is required.`);
+      if (!it?.icon || !MEDIA_RE.test(it.icon)) problems.push(`${n}: icon must be an https:// URL or an assets/ path.`);
+    });
+  });
+  (Array.isArray(c.ecosystem?.items) ? c.ecosystem.items : []).forEach((it, i) => {
+    if (!it?.icon || !MEDIA_RE.test(it.icon)) problems.push(`ecosystem.items[${i + 1}]: icon must be an https:// URL or an assets/ path.`);
+  });
 
   // Markets are stated in exactly one place so the footer and any map agree.
   if (c.footer?.markets !== undefined) {
@@ -201,7 +215,7 @@ function validate(c) {
   if (c.theme?.palette) {
     for (const k of THEME_COLORS) {
       const v = c.theme.palette[k];
-      if (v && !HEX_RE.test(v)) problems.push(`Theme colour "${k}" must be a hex value like #EDE9E2.`);
+      if (v && !HEX_RE.test(v)) problems.push(`Theme colour "${k}" must be a hex value like #ECE7DD.`);
     }
   }
 

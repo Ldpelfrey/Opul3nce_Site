@@ -24,7 +24,7 @@ Playwright at 1440px and 390px) or against the local project record. Nothing her
 
 **Opul3nce Luxury Concierge**, Scottsdale AZ. Johnathan Eden (CEO/founder), Danielle Fox (CMO,
 co-founder), William Anthony (CFO), Calvin Alfaro (Creative Director).
-Contact: `johnathan@opul3nce.io` · +1 (808) 276-8946 · IG `@opul3nce.io`.
+Contact: `info@opul3nce.io` · +1 (602) 383-4678 · IG `@opul3nce.io`.
 
 It sells **two unrelated things from one site**:
 

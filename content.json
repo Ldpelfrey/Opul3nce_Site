@@ -1,27 +1,27 @@
 {
   "_note": "Single source of truth. Every field here needs an input in admin/SECTIONS or publishing wipes it. Fields marked [VERIFY] are business facts nobody has supplied — they render an honest fallback, they are NOT invented.",
   "theme": {
-    "font": "bodoni-moda",
+    "font": "jost",
     "palette": {
-      "bone": "#EDE9E2",
-      "bone2": "#E4DFD6",
-      "ink": "#0E0E0D",
-      "ink2": "#1A1A18",
-      "leaf": "#7A5D1F",
-      "leafLift": "#C9A227"
+      "bone": "#ECE7DD",
+      "stone": "#B7AD9C",
+      "deepStone": "#6E675C",
+      "ink": "#151412",
+      "gold": "#A8936A"
     }
   },
   "meta": {
     "title": "Opul3nce Luxury Concierge — Exotic Rental & Private Transport, Scottsdale",
     "description": "Exotic cars, private transport, yachts and estates in Scottsdale, Miami and Los Angeles. Delivered, detailed and on time. Rates and availability on request.",
-    "ogImage": "assets/brand/og-image-1200x630.png",
+    "ogImage": "assets/brand/minimal/og-image.png",
     "canonical": "https://opul3nce.io/"
   },
   "brand": {
     "name": "OPUL3NCE",
     "monogram": "3E",
-    "monogramImg": "assets/brand/opul3nce-3e-leaf.svg",
-    "tagline": "Luxury Concierge"
+    "monogramImg": "assets/brand/minimal/mono-gold.svg",
+    "tagline": "Luxury Concierge",
+    "lockupImg": "assets/brand/minimal/lockup-horizontal.svg"
   },
   "hero": {
     "kicker": "Scottsdale · Miami · Los Angeles",
@@ -29,9 +29,12 @@
     "standfirst": "Exotic cars, private transport, yachts and estates — placed in your hands where you are, on the day you need them. One desk, one number, no counter.",
     "ctaPrimary": "Request availability",
     "ctaPrimaryHref": "#enquire",
-    "ctaSecondary": "View the catalogue",
-    "ctaSecondaryHref": "#catalogue",
-    "plateNote": "[VERIFY] Hero plate is typographic by design — no licensed Scottsdale/Sonoran photography has been supplied. Do NOT substitute stock; the live site's current hero is Dubai Marina and that is the exact failure being corrected."
+    "ctaSecondary": "Call (602) 383-4678",
+    "ctaSecondaryHref": "tel:+16023834678",
+    "plateNote": "Hero plate is lot 01 (G63), the client's own in-house photograph. Do NOT substitute stock; the live site's current hero is Dubai Marina and that is the exact failure being corrected.",
+    "image": "assets/mercedes-g63-amg.webp",
+    "imageAlt": "Black Mercedes-AMG G63 photographed three-quarter front under low garage light",
+    "imageCaption": "Lot 01. Mercedes-AMG G63, 2024."
   },
   "position": {
     "items": [
@@ -194,29 +197,172 @@
     "specNote": "Seat counts and drivetrains are manufacturer specifications for the model. Daily mileage caps, deposits, insurance terms, delivery radius and minimum age are confirmed at the time of booking.",
     "_specNoteInternal": "[VERIFY] Mileage caps, deposits, insurance terms, delivery radius and minimum age are business facts nobody has supplied. The public note above says they are confirmed at booking, which is true and commits to nothing. Replace with real terms once Johnathan provides them."
   },
-  "beyond": {
-    "heading": "Beyond the fleet",
-    "standfirst": "The same desk books the rest of the day.",
+  "services": {
+    "heading": "Services",
+    "standfirst": "One desk for travel, business and the vehicles behind both.",
+    "groups": [
+      {
+        "id": "travel",
+        "label": "Travel",
+        "title": "Travel Services",
+        "standfirst": "Vehicles, aviation, stays and time on the water. Transport, hospitality and the details around your experience.",
+        "cta": "Tell us your destination and dates.",
+        "ctaNote": "We will confirm the available options.",
+        "ctaHref": "#enquire",
+        "items": [
+          {
+            "name": "Luxury & exotic car rentals",
+            "body": "Premium vehicles, with delivery and pickup around your plans.",
+            "icon": "assets/services/luxury-exotic-car-rentals.webp"
+          },
+          {
+            "name": "Private aviation",
+            "body": "Jet charters, aircraft sourcing and sales, with travel coordination.",
+            "icon": "assets/services/private-aviation.webp"
+          },
+          {
+            "name": "Luxury stays & real estate",
+            "body": "Luxury stays, property sourcing and real estate introductions.",
+            "icon": "assets/services/luxury-stays-real-estate.webp"
+          },
+          {
+            "name": "Boats & yachts",
+            "body": "Private charters and experiences, with itinerary and hospitality coordination.",
+            "icon": "assets/services/boats-yachts.webp"
+          },
+          {
+            "name": "Executive transportation",
+            "body": "Black cars, SUVs, Sprinters and buses for transfers, groups and events.",
+            "icon": "assets/services/executive-transportation.webp"
+          },
+          {
+            "name": "Private dining & nightlife",
+            "body": "Private chefs, catering, dining reservations and Scottsdale nightlife access.",
+            "icon": "assets/services/private-dining-nightlife.webp"
+          },
+          {
+            "name": "Security & discretion",
+            "body": "Private and armed security coordination for travel, drivers and events.",
+            "icon": "assets/services/security-discretion.webp"
+          },
+          {
+            "name": "Events & experiences",
+            "body": "Venues, vendors and talent for private events and tailored experiences.",
+            "icon": "assets/services/events-experiences.webp"
+          }
+        ]
+      },
+      {
+        "id": "business",
+        "label": "Business",
+        "title": "Business Services",
+        "standfirst": "Brand, content and customer acquisition. Systems and resources behind the business.",
+        "cta": "Start with your business goals.",
+        "ctaNote": "We will define the right scope.",
+        "ctaHref": "#enquire",
+        "items": [
+          {
+            "name": "Branding & design",
+            "body": "Brand identity, logos and marketing materials with a consistent look.",
+            "icon": "assets/services/branding-design.webp"
+          },
+          {
+            "name": "Media production",
+            "body": "Photography, video and event content, from production through editing.",
+            "icon": "assets/services/media-production.webp"
+          },
+          {
+            "name": "Websites & funnels",
+            "body": "Websites and landing pages with booking, forms and CRM connections.",
+            "icon": "assets/services/websites-funnels.webp"
+          },
+          {
+            "name": "Paid ads & social growth",
+            "body": "Meta, Google and TikTok ads, social strategy, content and reporting.",
+            "icon": "assets/services/paid-ads-social-growth.webp"
+          },
+          {
+            "name": "CRM & sales systems",
+            "body": "GoHighLevel builds, sales pipelines and automated follow-up.",
+            "icon": "assets/services/crm-sales-systems.webp"
+          },
+          {
+            "name": "AI & automation",
+            "body": "AI assistants, integrations and workflows with clear team handoffs.",
+            "icon": "assets/services/ai-automation.webp"
+          },
+          {
+            "name": "Merchant processing",
+            "body": "Payment solutions, gateways and checkout integrations for your business.",
+            "icon": "assets/services/merchant-processing.webp"
+          },
+          {
+            "name": "Business credit & funding",
+            "body": "Credit-building resources and financing introductions, subject to provider eligibility and terms.",
+            "icon": "assets/services/business-credit-funding.webp"
+          }
+        ]
+      },
+      {
+        "id": "auto",
+        "label": "Auto",
+        "title": "Auto Services",
+        "standfirst": "Vehicle sourcing, personalization and ongoing care.",
+        "cta": "Vehicle-owner partnerships.",
+        "ctaNote": "Ask about rental operations and asset participation.",
+        "ctaHref": "#enquire",
+        "items": [
+          {
+            "name": "Source & acquire",
+            "body": "Vehicle sourcing and purchase options matched to your preferences and budget.",
+            "icon": "assets/services/source-acquire.webp"
+          },
+          {
+            "name": "Sell & consign",
+            "body": "Vehicle sales and consignment support, with presentation and buyer introductions.",
+            "icon": "assets/services/sell-consign.webp"
+          },
+          {
+            "name": "Customize & protect",
+            "body": "Tint, wraps, lighting, exhaust and performance or cosmetic upgrades.",
+            "icon": "assets/services/customize-protect.webp"
+          },
+          {
+            "name": "Detail & maintain",
+            "body": "Detailing, reconditioning, maintenance and specialist service coordination.",
+            "icon": "assets/services/detail-maintain.webp"
+          }
+        ]
+      }
+    ]
+  },
+  "ecosystem": {
+    "label": "Ecosystem",
+    "heading": "The OPUL3NCE Ecosystem",
+    "standfirst": "Relationships, experiences and opportunities within the OPUL3NCE network.",
+    "cta": "Connect with the OPUL3NCE ecosystem.",
+    "ctaNote": "Explore events, memberships, collaborations and the 4-A’s program.",
+    "ctaHref": "#enquire",
     "items": [
       {
-        "title": "Yacht charter",
-        "count": "21 vessels",
-        "body": "Pershing, Azimut, Westport and Viking hulls across Miami and Los Angeles. Crewed, provisioned, itinerary written to the day you have in mind."
+        "name": "4-A’s program",
+        "body": "Affiliate, Ambassador, Athlete and Agency partnerships. Application and interview required.",
+        "icon": "assets/services/4-a-s-program.webp"
       },
       {
-        "title": "Private estates",
-        "count": "12 properties",
-        "body": "Brickell, Coral Gables, Normandy Isles and Hollywood. Booked for stays, shoots and events, with staff arranged separately."
+        "name": "Events",
+        "body": "Cars & Creatives, private events and curated networking experiences.",
+        "icon": "assets/services/events.webp"
       },
       {
-        "title": "Group transport",
-        "count": "19 vehicles",
-        "body": "Executive Sprinters, Escalade and QX80 limousines, Prevost and MCI coaches to 56 seats. Chauffeured, for weddings, wraps and roadshows."
+        "name": "Memberships",
+        "body": "Membership opportunities within the OPUL3NCE ecosystem.",
+        "icon": "assets/services/memberships.webp"
       },
       {
-        "title": "Private aviation",
-        "count": "On request",
-        "body": "Charter arranged through a global operator network. Routing, catering and ground transfers handled from the same enquiry."
+        "name": "Brand collaborations",
+        "body": "Brand partnerships, shared experiences and curated introductions.",
+        "icon": "assets/services/brand-collaborations.webp"
       }
     ]
   },
@@ -278,48 +424,17 @@
       }
     ]
   },
-  "business": {
-    "heading": "Opul3nce Business Development",
-    "standfirst": "A separate practice, run by the same people. If you are here to rent a car, you can stop reading.",
-    "services": [
-      {
-        "title": "Websites & CRM",
-        "body": "Custom builds plus GoHighLevel setup, automation and training."
-      },
-      {
-        "title": "Merchant processing",
-        "body": "Card processing for high- and low-risk merchants, POS and online."
-      },
-      {
-        "title": "Business credit & funding",
-        "body": "Credit profile building, lender introductions, working capital."
-      },
-      {
-        "title": "Media production",
-        "body": "Video production, editing and content curation."
-      },
-      {
-        "title": "Branding & design",
-        "body": "Identity, logo systems and marketing collateral."
-      },
-      {
-        "title": "Paid acquisition",
-        "body": "TikTok, Google and Meta campaigns, built and managed."
-      }
-    ],
-    "cta": "Request a business audit",
-    "ctaHref": "#enquire"
-  },
   "enquire": {
     "heading": "Make an enquiry",
-    "standfirst": "Tell us the dates and the vehicle. You get a rate and a confirmation, not a callback queue.",
+    "standfirst": "Tell us the dates and the vehicle, or the service. You get a rate and a confirmation, not a callback queue.",
     "interests": [
       "Exotic car rental",
-      "Group transport",
-      "Yacht charter",
-      "Private estate",
+      "Executive transportation",
       "Private aviation",
-      "Business development"
+      "Stays & yachts",
+      "Business services",
+      "Auto services",
+      "Ecosystem & memberships"
     ],
     "consent": "I consent to receive SMS and email about this enquiry.",
     "submit": "Send enquiry",
