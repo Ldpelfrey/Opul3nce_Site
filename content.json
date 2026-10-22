@@ -253,10 +253,41 @@
         ]
       },
       {
+        "id": "auto",
+        "label": "Auto",
+        "title": "Auto Services",
+        "standfirst": "Vehicle sourcing, personalization and ongoing care.",
+        "cta": "Vehicle-owner partnerships.",
+        "ctaNote": "Ask about rental operations and asset participation.",
+        "ctaHref": "#enquire",
+        "items": [
+          {
+            "name": "Source & acquire",
+            "body": "Vehicle sourcing and purchase options matched to your preferences and budget.",
+            "icon": "assets/services/source-acquire.webp"
+          },
+          {
+            "name": "Sell & consign",
+            "body": "Vehicle sales and consignment support, with presentation and buyer introductions.",
+            "icon": "assets/services/sell-consign.webp"
+          },
+          {
+            "name": "Customize & protect",
+            "body": "Tint, wraps, lighting, exhaust and performance or cosmetic upgrades.",
+            "icon": "assets/services/customize-protect.webp"
+          },
+          {
+            "name": "Detail & maintain",
+            "body": "Detailing, reconditioning, maintenance and specialist service coordination.",
+            "icon": "assets/services/detail-maintain.webp"
+          }
+        ]
+      },
+      {
         "id": "business",
         "label": "Business",
         "title": "Business Services",
-        "standfirst": "Brand, content and customer acquisition. Systems and resources behind the business.",
+        "standfirst": "A separate practice, run by the same people. Brand, content and customer acquisition. Systems and resources behind the business.",
         "cta": "Start with your business goals.",
         "ctaNote": "We will define the right scope.",
         "ctaHref": "#enquire",
@@ -300,37 +331,6 @@
             "name": "Business credit & funding",
             "body": "Credit-building resources and financing introductions, subject to provider eligibility and terms.",
             "icon": "assets/services/business-credit-funding.webp"
-          }
-        ]
-      },
-      {
-        "id": "auto",
-        "label": "Auto",
-        "title": "Auto Services",
-        "standfirst": "Vehicle sourcing, personalization and ongoing care.",
-        "cta": "Vehicle-owner partnerships.",
-        "ctaNote": "Ask about rental operations and asset participation.",
-        "ctaHref": "#enquire",
-        "items": [
-          {
-            "name": "Source & acquire",
-            "body": "Vehicle sourcing and purchase options matched to your preferences and budget.",
-            "icon": "assets/services/source-acquire.webp"
-          },
-          {
-            "name": "Sell & consign",
-            "body": "Vehicle sales and consignment support, with presentation and buyer introductions.",
-            "icon": "assets/services/sell-consign.webp"
-          },
-          {
-            "name": "Customize & protect",
-            "body": "Tint, wraps, lighting, exhaust and performance or cosmetic upgrades.",
-            "icon": "assets/services/customize-protect.webp"
-          },
-          {
-            "name": "Detail & maintain",
-            "body": "Detailing, reconditioning, maintenance and specialist service coordination.",
-            "icon": "assets/services/detail-maintain.webp"
           }
         ]
       }
