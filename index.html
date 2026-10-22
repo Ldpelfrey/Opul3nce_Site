@@ -158,6 +158,8 @@ h3{font-size:1.25rem;line-height:1.25;font-weight:500;letter-spacing:-.005em}
 .lot-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:16px;padding-top:14px;border-top:1px solid var(--rule);font-size:.9375rem}
 .lot-foot .rate{color:var(--deep)}
 .fine{margin-top:48px;font-size:.875rem;color:var(--deep);max-width:56em}
+@media (min-width:1101px){.lot.wide{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);column-gap:clamp(24px,3vw,40px);align-content:start}
+.lot.wide .lot-plate{grid-row:1/span 6}.lot.wide .lot-plate img{aspect-ratio:16/9}.lot.wide .lot-meta{margin-top:0}}
 @media (max-width:1100px){.lots{grid-template-columns:repeat(2,minmax(0,1fr));gap:48px 32px}}
 @media (max-width:620px){.lots{grid-template-columns:1fr}}
 
@@ -514,7 +516,16 @@ function wireFilters() {
     btns.forEach(x => x.setAttribute('aria-pressed', String(x === b)));
     const f = b.dataset.filter;
     document.querySelectorAll('.lot').forEach(l => { l.hidden = !(f === 'All' || l.dataset.class === f); });
+    markWide();
   }));
+  markWide();
+}
+
+// a lone card on the last row of the 3-column grid becomes a full-width feature row
+function markWide() {
+  const vis = [...document.querySelectorAll('.lot')].filter(l => !l.hidden);
+  vis.forEach(l => l.classList.remove('wide'));
+  if (vis.length > 1 && vis.length % 3 === 1) vis[vis.length - 1].classList.add('wide');
 }
 
 function wireLotCTAs() {
