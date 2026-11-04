@@ -1,0 +1,7 @@
+# Reply draft to Johnathan (Luke sends; never sent by Claude)
+
+Got it, logo stays exactly as is. Yes please send the flat version from the printer plus your other variations. The original files they sent you are best (AI, EPS, PDF or SVG), a big PNG works if that's all you have.
+
+That's the piece the site needs: the shiny one is great for social but doesn't sit right on a light page, the flat one will.
+
+While you're at it, the few things still holding the site: rates/deposit (or "on request" for now), which cities you're actually in (Scottsdale only, or Miami + LA too), and any real Arizona photos of the cars.
