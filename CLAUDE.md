@@ -27,7 +27,11 @@ vercel --prod                        # deploy. Repo is NOT git-connected to Verc
 
 Node is pinned to **22.x** in `package.json` — Vercel defaults new projects to 24 and the build fails.
 
-## Current state (2026-10-22): AWAITING JOHNATHAN'S FEEDBACK
+## 2026-11-04: Johnathan feedback round 1
+- **Keep his logo as-is.** Our redrawn 3E (`assets/brand/minimal/`) is retired from the site; needle-vs-stem is closed. Waiting on his printer's flat file + variations (REPLY-DRAFT.md asks; Luke sends). Plan + done-when rows: FEEDBACK-PLAN.md. No site edits until the file lands.
+- The redesign now lives on lucaspelfrey.com as a concept case study (#brand).
+
+## Current state (2026-10-22): previous state
 
 - **Branch `redesign-minimal`** (pushed, NOT deployed, NOT merged) = the minimal redesign + client funnel. `main` is still the Sept Bodoni build live at opul3nce-site.vercel.app.
   - Jost, bone/ink, flat 3E (`assets/brand/minimal/`), 24 deck services as T3 roundels (`assets/services/`, made by `~/Opul3nce-Rebrand/pitch/web/export_services.py`).
