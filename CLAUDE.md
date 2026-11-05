@@ -30,6 +30,7 @@ Node is pinned to **22.x** in `package.json` — Vercel defaults new projects to
 ## 2026-11-04: Johnathan feedback round 1
 - **Keep his logo as-is.** Our redrawn 3E (`assets/brand/minimal/`) is retired from the site; needle-vs-stem is closed. Waiting on his printer's flat file + variations (REPLY-DRAFT.md asks; Luke sends). Plan + done-when rows: FEEDBACK-PLAN.md. No site edits until the file lands.
 - The redesign now lives on lucaspelfrey.com as a concept case study (#brand).
+- **2026-11-04 DEPLOYED:** `redesign-minimal` + owner logo merged to `main` (b0072d7) and live at opul3nce-site.vercel.app (noindex kept). Logo = his own renders in `assets/brand/owner/` (3E cutout header, stacked lockup footer, favicons, og) as stand-ins; swap for the printer's flat file when it lands. Header wordmark is still Jost text next to his 3E. Leads capture nothing live until Blob/Gmail env is set.
 
 ## Current state (2026-10-22): previous state
 
