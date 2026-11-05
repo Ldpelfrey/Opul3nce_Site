@@ -93,7 +93,7 @@ it('(i) CSV: header, escaping, formula neutralised', async () => {
   const res = mkRes(); await leads({ method: 'GET', headers: { authorization: 'Bearer ' + issueToken() }, query: { format: 'csv' } }, res);
   assert.strictEqual(res.code, 200); assert(/text\/csv/.test(res.headers['Content-Type'])); assert(/attachment/.test(res.headers['Content-Disposition']));
   const csv = res.body;
-  assert(csv.startsWith('ts,kind,name,phone,email,channel,interest,item,dates,city,source,utm_source,utm_medium,utm_campaign,consent,message\r\n'));
+  assert(csv.startsWith('ts,kind,name,phone,email,channel,interest,item,dates,pickup,dropoff,vehicleType,budget,city,source,utm_source,utm_medium,utm_campaign,consent,message\r\n'));
   assert(csv.includes(",'=SUM(1),"), csv); assert(csv.includes('"Hi, ""there"" ok"'), csv); assert(csv.includes(',ig,'));
 });
 it('(j) GET /api/lead -> 405', async () => { clear(); const r = await post(null, '2.2.2.2', 'GET'); assert.strictEqual(r.code, 405); });

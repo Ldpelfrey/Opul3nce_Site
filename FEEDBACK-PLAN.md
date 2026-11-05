@@ -15,3 +15,14 @@ Interim: no site change until his flat file lands. Shipping a traced 3E after he
 Still open from 2026-10-22 (re-ask, short): rates + deposit, 3 vs 7 markets, real Arizona photos, review source (Turo?), tagline ("An Ecosystem of Access" vs "Luxury Concierge"), whether the site lists aviation/security/credit/4-A's.
 
 Note: the live stand-in logos (assets/brand/owner/) are cut from the shiny AI renders — the version he said the printer couldn't use. Fine on screen, but replace them first when the flat file arrives.
+
+# Revision — round 1b (2026-11-04, `feedback/2026-11-04b.md`)
+
+| # | Literal request | Decision | Done when |
+|---|---|---|---|
+| 5 | "ckkk love it" | **Keep** the redesign as deployed. | — |
+| 6 | Easy dropdown form: pick-up/drop-off date+time, vehicle type (economy, sports car, luxury sedan/SUV, ultra luxury, exotic), budget range, contact info | "Exotic car" chip renamed **Car rental**; choosing it swaps step 2's free-text dates for pick-up + drop-off date/time pickers, a vehicle-type dropdown (his 5 types, verbatim order) and a budget dropdown. Contact stays step 3. Fields flow to the lead contract, email, inbox and CSV. | Car request posts pickup/dropoff/vehicleType/budget (tests 17 + 10 pass; driven end to end at 1440 + 390) |
+| 7 | "Reach back out with options that fit" | Leads must actually reach him. **Blocked:** no Blob store and no Gmail env, so the live form falls back to "send as a text". Luke's call. | A test lead lands in admin/leads.html or his inbox |
+| 8 | "Cars we broker won't be on our site" | Step-2 hint: "We broker far more cars than we list…" | Hint visible on the car path |
+
+Budget ranges ($ per day: <300, 300–750, 750–1,500, 1,500–3,000, 3,000+, not sure) are **Claude's placeholders** — confirm with Johnathan. Editable in content.json funnel.budgets.

@@ -2,7 +2,7 @@
 const { requireAuth } = require('./_lib/auth.js');
 const store = require('./_lib/store.js');
 
-const COLS = ['ts', 'kind', 'name', 'phone', 'email', 'channel', 'interest', 'item', 'dates', 'city',
+const COLS = ['ts', 'kind', 'name', 'phone', 'email', 'channel', 'interest', 'item', 'dates', 'pickup', 'dropoff', 'vehicleType', 'budget', 'city',
   'source', 'utm_source', 'utm_medium', 'utm_campaign', 'consent', 'message'];
 
 function cell(v) {

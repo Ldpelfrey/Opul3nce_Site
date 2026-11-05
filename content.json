@@ -214,7 +214,7 @@
             "name": "Luxury & exotic car rentals",
             "body": "Premium vehicles, with delivery and pickup around your plans.",
             "icon": "assets/services/luxury-exotic-car-rentals.webp",
-            "chip": "Exotic car"
+            "chip": "Car rental"
           },
           {
             "name": "Private aviation",
@@ -259,7 +259,7 @@
             "chip": "Events & dining"
           }
         ],
-        "chip": "Exotic car"
+        "chip": "Car rental"
       },
       {
         "id": "auto",
@@ -467,7 +467,7 @@
     "step1Title": "What can we arrange?",
     "step1Hint": "Choose one. You can add detail on the next step.",
     "chips": [
-      "Exotic car",
+      "Car rental",
       "Executive transport",
       "Private aviation",
       "Stays & yachts",
@@ -478,6 +478,28 @@
       "Ecosystem"
     ],
     "itemLabel": "Vehicle or service",
+    "carChip": "Car rental",
+    "carHint": "We broker far more cars than we list. Tell us the type and budget and we'll come back with options that fit.",
+    "pickupLabel": "Pick-up date and time",
+    "dropoffLabel": "Drop-off date and time",
+    "vehicleTypeLabel": "Type of vehicle",
+    "vehicleTypes": [
+      "Economy",
+      "Sports car",
+      "Luxury sedan / SUV",
+      "Ultra luxury",
+      "Exotic"
+    ],
+    "budgetLabel": "Budget per day",
+    "budgets": [
+      "Under $300",
+      "$300 – $750",
+      "$750 – $1,500",
+      "$1,500 – $3,000",
+      "$3,000+",
+      "Not sure yet"
+    ],
+    "choose": "Choose one",
     "step2Title": "When and where?",
     "datesLabel": "Dates",
     "datesPlaceholder": "e.g. 14-17 Oct",
@@ -531,7 +553,7 @@
     "stickyText": "Text us",
     "askLink": "Ask about this",
     "stepWord": "Step",
-    "lotChip": "Exotic car",
+    "lotChip": "Car rental",
     "pName": "name",
     "pContact": "a phone number or email",
     "pEmail": "a valid email",

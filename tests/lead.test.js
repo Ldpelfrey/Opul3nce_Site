@@ -23,6 +23,7 @@ it('honeypot silently dropped', () => { const r = validate({ ...base, company: '
 it('utm kept, junk keys dropped', () => { const r = validate({ ...base, utm: { source: 'ig', medium: 'paid', evil: 'x' } }); assert.deepStrictEqual(r.lead.utm, { source: 'ig', medium: 'paid' }); });
 it('control chars stripped, lengths capped', () => { const r = validate({ ...base, name: 'A\u0000B', message: 'x'.repeat(9000) }); assert(r.lead.name === 'A B' && r.lead.message.length === 4000); });
 it('non-object body', () => bad(null, 'kind'));
+it('car request keeps pick-up, drop-off, type, budget', () => { const r = validate({ ...base, item: '', interest: 'Car rental', pickup: '2026-11-20T10:00', dropoff: '2026-11-22T18:00', vehicleType: 'Exotic', budget: '$750 – $1,500' }); assert(r.ok && r.lead.pickup === '2026-11-20T10:00' && r.lead.dropoff === '2026-11-22T18:00' && r.lead.vehicleType === 'Exotic' && r.lead.budget === '$750 – $1,500'); });
 
 let fail = 0;
 for (const [n, f] of t) { try { f(); console.log('ok  ', n); } catch (e) { fail++; console.log('FAIL', n, '-', e.message); } }

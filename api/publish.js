@@ -209,7 +209,7 @@ function validate(c) {
     const f = c.funnel;
     if (!f || typeof f !== 'object' || Array.isArray(f)) problems.push('funnel must be an object.');
     else {
-      const LISTS = ['chips', 'cities', 'channels'];
+      const LISTS = ['chips', 'cities', 'channels', 'vehicleTypes', 'budgets'];
       Object.keys(f).forEach(k => {
         if (LISTS.includes(k)) return;
         if (typeof f[k] !== 'string' || !f[k].trim()) problems.push(`funnel.${k} is required text.`);
@@ -226,7 +226,7 @@ function validate(c) {
       if (f.smsHref && !/^sms:\+?\d+$/.test(f.smsHref)) problems.push('funnel.smsHref must look like sms:+16023834678.');
       // every chip a lot, group, item or the ecosystem preselects must exist, or the preselect silently does nothing
       const chips = Array.isArray(f.chips) ? f.chips : [];
-      const want = [['funnel.lotChip', f.lotChip], ['ecosystem.chip', c.ecosystem?.chip]];
+      const want = [['funnel.lotChip', f.lotChip], ['funnel.carChip', f.carChip], ['ecosystem.chip', c.ecosystem?.chip]];
       (Array.isArray(c.services?.groups) ? c.services.groups : []).forEach((g, gi) => {
         want.push([`services.groups[${gi + 1}].chip`, g.chip]);
         (g.items || []).forEach((it, i) => { if (it.chip) want.push([`services.groups[${gi + 1}].items[${i + 1}].chip`, it.chip]); });

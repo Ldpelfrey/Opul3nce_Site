@@ -28,7 +28,8 @@ async function notify(lead) {
   const lines = [
     `Kind: ${lead.kind}`, `Name: ${lead.name}`, `Phone: ${lead.phone}`, `Email: ${lead.email}`,
     `Contact by: ${lead.channel}`, `Interest: ${lead.interest}`, `Item: ${lead.item}`,
-    `Dates: ${lead.dates}`, `City: ${lead.city}`, `Consent to text: ${lead.consent ? 'yes' : 'no'}`,
+    `Dates: ${lead.dates}`, `Pick-up: ${lead.pickup.replace('T', ' ')}`, `Drop-off: ${lead.dropoff.replace('T', ' ')}`,
+    `Vehicle type: ${lead.vehicleType}`, `Budget per day: ${lead.budget}`, `City: ${lead.city}`, `Consent to text: ${lead.consent ? 'yes' : 'no'}`,
     `Source: ${lead.source}`, `Page: ${lead.page}`, `Referrer: ${lead.referrer}`,
     ...Object.entries(lead.utm || {}).map(([k, v]) => `utm_${k}: ${v}`),
     `Received: ${lead.ts}`, `Id: ${lead.id}`, '', 'Message:', lead.message,
@@ -38,7 +39,7 @@ async function notify(lead) {
     from: `"Opul3nce leads" <${user}>`,
     to,
     ...(lead.email ? { replyTo: lead.email } : {}),
-    subject: `Lead: ${lead.kind} · ${lead.interest || lead.item || '-'} · ${who}`,
+    subject: `Lead: ${lead.kind} · ${[lead.interest || lead.item || '-', lead.vehicleType, lead.budget].filter(Boolean).join(' · ')} · ${who}`,
     text: lines.join('\n'),
   });
 }
