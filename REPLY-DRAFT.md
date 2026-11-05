@@ -1,6 +1,6 @@
 # Reply draft to Johnathan (Luke sends; never sent by Claude)
 
-Got it, logo stays exactly as is. Yes please send the flat version from the printer plus your other variations. The original files they sent you are best (AI, EPS, PDF or SVG), a big PNG works if that's all you have.
+Got it, logo stays exactly as is. Yes please send the flat version from the printer plus your other variations. The original files they sent you are best (AI, EPS, PDF or SVG), a big PNG works if that's all you have. And if you can, send the marketing pieces they printed (or photos of them) so the site matches what's already out there.
 
 That's the piece the site needs: the shiny one is great for social but doesn't sit right on a light page, the flat one will.
 
