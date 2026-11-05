@@ -13,15 +13,15 @@
   "meta": {
     "title": "Opul3nce Luxury Concierge — Exotic Rental & Private Transport, Scottsdale",
     "description": "Exotic cars, private transport, yachts and estates in Scottsdale, Miami and Los Angeles. Delivered, detailed and on time. Rates and availability on request.",
-    "ogImage": "assets/brand/minimal/og-image.png",
+    "ogImage": "assets/brand/owner/og-image.png",
     "canonical": "https://opul3nce.io/"
   },
   "brand": {
     "name": "OPUL3NCE",
     "monogram": "3E",
-    "monogramImg": "assets/brand/minimal/mono-gold.svg",
+    "monogramImg": "assets/brand/owner/mark-3e.webp",
     "tagline": "Luxury Concierge",
-    "lockupImg": "assets/brand/minimal/lockup-horizontal.svg"
+    "lockupImg": "assets/brand/owner/lockup-stacked.webp"
   },
   "hero": {
     "kicker": "Scottsdale · Miami · Los Angeles",
